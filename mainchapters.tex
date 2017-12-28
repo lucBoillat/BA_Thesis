@@ -2,4 +2,11 @@
 This chapter covers the design of the blockchain explorer and the components necessary to run the application.
 
 \section{Structure of the Service}
-The core of the Program
+The program that users and admins use to view blockchain data is a website, which is made up of a front- and a backend. However, to run the blockchain explorer on its own, additional components beside the front- and backend programs are required. The website fetches blockchain data from an SQL database that runs independently from the blockchain. A separate database was chosen, because additional data like statistical information needs to be calculated and stored as well, which would bloat all miner?s built-in databases with information, if implemented in the miner. The fact that there are unified data structures and the possibility of having stored procedures in the database makes SQL a preferable database model, since the website always queries predefined statements. This also makes running the website possible without having a miner running in the backend. However this requires a program that copies data from a running Bazo mining node?s database and stores it in the new database. As mentioned above, the backend accesses this database by making queries for relevant data and sending the results to the frontend to be displayed to the user.
+GRAPHIC OF SYSTEM
+\section{Structure of the Website}
+To make sure that a user has access to all features of the website at all times, a navbar that features links to all functions and a search bar are present on every page of the application. 
+
+\chapter{Implementation}
+
+\section{}

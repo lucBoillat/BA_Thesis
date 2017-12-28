@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.20)  28 DEC 2017 16:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.20)  28 DEC 2017 16:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -577,14 +577,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--54
 
 ]) [3] [4
 
-] (./main.toc)
+] (./main.toc
+[5])
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
-
-[5] [6
-
-] (./introduction.tex
+ [6] (./introduction.tex
 Chapter 1.
 
 Overfull \hbox (2.24834pt too wide) in paragraph at lines 7--8
@@ -593,6 +591,7 @@ Overfull \hbox (2.24834pt too wide) in paragraph at lines 7--8
  []
 
 ) (./relatedwork.tex [1
+
 
 ] [2
 
@@ -604,22 +603,26 @@ Overfull \hbox (6.12723pt too wide) in paragraph at lines 7--7
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 7099) has occurred while \output is active []
 
  [3])
 (./mainchapters.tex [4]
 Chapter 3.
-) (./evaluation.tex [5
+[5
 
 ] [6
 
 ]
 Chapter 4.
-) (./summary.tex [7] [8
+) (./evaluation.tex [7] [8
 
 ]
 Chapter 5.
-) (./bibliography.tex [9] [10
+) (./summary.tex [9] [10
+
+]
+Chapter 6.
+) (./bibliography.tex [11] [12
 
 ]
 LaTeX Font Info:    Try loading font information for T1+aett on input line 4.
@@ -627,61 +630,57 @@ LaTeX Font Info:    Try loading font information for T1+aett on input line 4.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ))
-(./abbreviations.tex [11] [12
+(./abbreviations.tex [13] [14
 
 ]) (./glossary.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--1
 
  []
 
-[13] [14
+[15] [16
 
-]) [15] [16
+]) [17] [18
 
 ] (./main.lof)
 \tf@lof=\write5
 \openout5 = `main.lof'.
 
- [17] [18
+ [19] [20
 
 ] (./main.lot)
 \tf@lot=\write6
 \openout6 = `main.lot'.
 
  (./appendix.tex
-[19] [20
-
-]
-Appendix A.
 [21] [22
 
 ]
+Appendix A.
+[23] [24
+
+]
 Appendix B.
-) [23] (./main.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+) [25] (./main.aux) ) 
 Here is how much of TeX's memory you used:
  4862 strings out of 492995
  64769 string characters out of 6132703
- 132976 words of memory out of 5000000
+ 132980 words of memory out of 5000000
  8189 multiletter control sequences out of 15000+600000
  49758 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,6n,27p,1223b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texli
-ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/
-texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-d
-ist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (31 pages, 116786 bytes).
+ 39i,6n,27p,1223b,274s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8
+r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12
+.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
+fb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pf
+b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/t
+exlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on main.pdf (33 pages, 121233 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
- 101 compressed objects within 2 object streams
+ 153 PDF objects out of 1000 (max. 8388607)
+ 105 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
