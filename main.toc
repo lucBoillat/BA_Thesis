@@ -10,27 +10,26 @@
 \contentsline {section}{\numberline {1.3}Thesis Outline}{1}
 \contentsline {chapter}{\numberline {2}Related Work}{3}
 \contentsline {section}{\numberline {2.1}The Bazo Blockchain and Cryptocurrency}{3}
-\contentsline {section}{\numberline {2.2}Existing Blockchain Explorers and Analytics Platforms}{4}
+\contentsline {section}{\numberline {2.2}Blockchain Explorers and Analytics Platforms}{4}
 \contentsline {subsection}{\numberline {2.2.1}Blockexplorer.com}{4}
 \contentsline {subsection}{\numberline {2.2.2}Etherscan.io}{4}
 \contentsline {section}{\numberline {2.3}Analysis}{6}
-\contentsline {subsection}{\numberline {2.3.1}Requirements for the Bazo Blockchain Explorer}{6}
-\contentsline {subsubsection}{Navbar}{6}
 \contentsline {chapter}{\numberline {3}Design}{7}
-\contentsline {section}{\numberline {3.1}Structure of the Service}{7}
-\contentsline {section}{\numberline {3.2}Structure of the Website}{7}
-\contentsline {section}{\numberline {3.3}idk}{7}
-\contentsline {chapter}{\numberline {4}Implementation}{9}
-\contentsline {section}{\numberline {4.1}Frontend}{9}
-\contentsline {subsection}{\numberline {4.1.1}HTML-Templates}{9}
-\contentsline {subsection}{\numberline {4.1.2}UI Frameworks}{10}
-\contentsline {subsection}{\numberline {4.1.3}Client-Side Logic}{10}
-\contentsline {chapter}{\numberline {5}Evaluation}{11}
-\contentsline {chapter}{\numberline {6}Summary and Conclusions}{13}
-\contentsline {chapter}{Bibliography}{15}
-\contentsline {chapter}{Abbreviations}{17}
-\contentsline {chapter}{Glossary}{19}
-\contentsline {chapter}{List of Figures}{19}
-\contentsline {chapter}{List of Tables}{21}
-\contentsline {chapter}{\numberline {A}Installation Guidelines}{25}
-\contentsline {chapter}{\numberline {B}Contents of the CD}{27}
+\contentsline {section}{\numberline {3.1}Requirements for the Bazo Blockchain Explorer}{7}
+\contentsline {section}{\numberline {3.2}Structure of the Service}{8}
+\contentsline {section}{\numberline {3.3}Structure of the Website}{10}
+\contentsline {chapter}{\numberline {4}Implementation}{11}
+\contentsline {section}{\numberline {4.1}Frontend}{11}
+\contentsline {subsection}{\numberline {4.1.1}HTML Templates}{11}
+\contentsline {subsubsection}{Reusable Modules}{12}
+\contentsline {subsection}{\numberline {4.1.2}UI Frameworks}{12}
+\contentsline {subsection}{\numberline {4.1.3}Client-Side Logic}{12}
+\contentsline {chapter}{\numberline {5}Evaluation}{13}
+\contentsline {chapter}{\numberline {6}Summary and Conclusions}{15}
+\contentsline {chapter}{Bibliography}{17}
+\contentsline {chapter}{Abbreviations}{19}
+\contentsline {chapter}{Glossary}{21}
+\contentsline {chapter}{List of Figures}{21}
+\contentsline {chapter}{List of Tables}{23}
+\contentsline {chapter}{\numberline {A}Installation Guidelines}{27}
+\contentsline {chapter}{\numberline {B}Contents of the CD}{29}
