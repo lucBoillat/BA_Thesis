@@ -13,17 +13,24 @@
 \contentsline {section}{\numberline {2.2}Existing Blockchain Explorers and Analytics Platforms}{4}
 \contentsline {subsection}{\numberline {2.2.1}Blockexplorer.com}{4}
 \contentsline {subsection}{\numberline {2.2.2}Etherscan.io}{4}
-\contentsline {section}{\numberline {2.3}Analysis}{4}
-\contentsline {chapter}{\numberline {3}Design}{5}
-\contentsline {section}{\numberline {3.1}Structure of the Service}{5}
-\contentsline {section}{\numberline {3.2}Structure of the Website}{5}
-\contentsline {chapter}{\numberline {4}Implementation}{7}
-\contentsline {chapter}{\numberline {5}Evaluation}{9}
-\contentsline {chapter}{\numberline {6}Summary and Conclusions}{11}
-\contentsline {chapter}{Bibliography}{13}
-\contentsline {chapter}{Abbreviations}{15}
-\contentsline {chapter}{Glossary}{17}
-\contentsline {chapter}{List of Figures}{17}
-\contentsline {chapter}{List of Tables}{19}
-\contentsline {chapter}{\numberline {A}Installation Guidelines}{23}
-\contentsline {chapter}{\numberline {B}Contents of the CD}{25}
+\contentsline {section}{\numberline {2.3}Analysis}{6}
+\contentsline {subsection}{\numberline {2.3.1}Requirements for the Bazo Blockchain Explorer}{6}
+\contentsline {subsubsection}{Navbar}{6}
+\contentsline {chapter}{\numberline {3}Design}{7}
+\contentsline {section}{\numberline {3.1}Structure of the Service}{7}
+\contentsline {section}{\numberline {3.2}Structure of the Website}{7}
+\contentsline {section}{\numberline {3.3}idk}{7}
+\contentsline {chapter}{\numberline {4}Implementation}{9}
+\contentsline {section}{\numberline {4.1}Frontend}{9}
+\contentsline {subsection}{\numberline {4.1.1}HTML-Templates}{9}
+\contentsline {subsection}{\numberline {4.1.2}UI Frameworks}{10}
+\contentsline {subsection}{\numberline {4.1.3}Client-Side Logic}{10}
+\contentsline {chapter}{\numberline {5}Evaluation}{11}
+\contentsline {chapter}{\numberline {6}Summary and Conclusions}{13}
+\contentsline {chapter}{Bibliography}{15}
+\contentsline {chapter}{Abbreviations}{17}
+\contentsline {chapter}{Glossary}{19}
+\contentsline {chapter}{List of Figures}{19}
+\contentsline {chapter}{List of Tables}{21}
+\contentsline {chapter}{\numberline {A}Installation Guidelines}{25}
+\contentsline {chapter}{\numberline {B}Contents of the CD}{27}
