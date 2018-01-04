@@ -6,30 +6,41 @@
 \contentsline {chapter}{Acknowledgments}{iii}
 \contentsline {chapter}{\numberline {1}Introduction}{1}
 \contentsline {section}{\numberline {1.1}Motivation}{1}
-\contentsline {section}{\numberline {1.2}Description of Work}{1}
-\contentsline {section}{\numberline {1.3}Thesis Outline}{1}
-\contentsline {chapter}{\numberline {2}Related Work}{3}
+\contentsline {section}{\numberline {1.2}Description of Work}{2}
+\contentsline {section}{\numberline {1.3}Thesis Outline}{2}
+\contentsline {chapter}{\numberline {2}Background and Related Work}{3}
 \contentsline {section}{\numberline {2.1}The Bazo Blockchain and Cryptocurrency}{3}
-\contentsline {section}{\numberline {2.2}Blockchain Explorers and Analytics Platforms}{4}
-\contentsline {subsection}{\numberline {2.2.1}Blockexplorer.com}{4}
-\contentsline {subsection}{\numberline {2.2.2}Etherscan.io}{4}
-\contentsline {section}{\numberline {2.3}Analysis}{6}
-\contentsline {chapter}{\numberline {3}Design}{7}
-\contentsline {section}{\numberline {3.1}Requirements for the Bazo Blockchain Explorer}{7}
-\contentsline {section}{\numberline {3.2}Structure of the Service}{8}
-\contentsline {section}{\numberline {3.3}Structure of the Website}{10}
-\contentsline {chapter}{\numberline {4}Implementation}{11}
-\contentsline {section}{\numberline {4.1}Frontend}{11}
-\contentsline {subsection}{\numberline {4.1.1}HTML Templates}{11}
-\contentsline {subsubsection}{Reusable Modules}{12}
-\contentsline {subsection}{\numberline {4.1.2}UI Frameworks}{12}
-\contentsline {subsection}{\numberline {4.1.3}Client-Side Logic}{12}
-\contentsline {chapter}{\numberline {5}Evaluation}{13}
-\contentsline {chapter}{\numberline {6}Summary and Conclusions}{15}
-\contentsline {chapter}{Bibliography}{17}
-\contentsline {chapter}{Abbreviations}{19}
-\contentsline {chapter}{Glossary}{21}
-\contentsline {chapter}{List of Figures}{21}
-\contentsline {chapter}{List of Tables}{23}
-\contentsline {chapter}{\numberline {A}Installation Guidelines}{27}
-\contentsline {chapter}{\numberline {B}Contents of the CD}{29}
+\contentsline {subsection}{\numberline {2.1.1}Characteristics of Bazo}{3}
+\contentsline {subsection}{\numberline {2.1.2}Bazo Applications}{4}
+\contentsline {section}{\numberline {2.2}Blockchain Explorers and Analytics Platforms}{5}
+\contentsline {subsection}{\numberline {2.2.1}Blockexplorer.com}{5}
+\contentsline {subsection}{\numberline {2.2.2}Etherscan.io}{5}
+\contentsline {section}{\numberline {2.3}Analysis}{8}
+\contentsline {chapter}{\numberline {3}Design}{9}
+\contentsline {section}{\numberline {3.1}Requirements for the Bazo Blockchain Explorer}{9}
+\contentsline {section}{\numberline {3.2}Structure of the Service}{10}
+\contentsline {section}{\numberline {3.3}Structure of the Website}{12}
+\contentsline {chapter}{\numberline {4}Implementation}{13}
+\contentsline {section}{\numberline {4.1}Frontend}{13}
+\contentsline {subsection}{\numberline {4.1.1}HTML Templates}{13}
+\contentsline {subsubsection}{Reusable Modules}{14}
+\contentsline {subsection}{\numberline {4.1.2}Bootstrap}{14}
+\contentsline {subsection}{\numberline {4.1.3}Client-Side Logic}{14}
+\contentsline {subsubsection}{Process}{14}
+\contentsline {section}{\numberline {4.2}Backend}{14}
+\contentsline {subsection}{\numberline {4.2.1}Router}{14}
+\contentsline {subsection}{\numberline {4.2.2}SQL-Queries}{14}
+\contentsline {subsection}{\numberline {4.2.3}GetData/Formatter}{14}
+\contentsline {subsection}{\numberline {4.2.4}Structs}{14}
+\contentsline {section}{\numberline {4.3}PSQL Database}{14}
+\contentsline {subsection}{\numberline {4.3.1}Tables}{14}
+\contentsline {section}{\numberline {4.4}Hosting}{14}
+\contentsline {chapter}{\numberline {5}Evaluation}{15}
+\contentsline {chapter}{\numberline {6}Summary and Conclusions}{17}
+\contentsline {chapter}{Bibliography}{19}
+\contentsline {chapter}{Abbreviations}{21}
+\contentsline {chapter}{Glossary}{23}
+\contentsline {chapter}{List of Figures}{23}
+\contentsline {chapter}{List of Tables}{25}
+\contentsline {chapter}{\numberline {A}Installation Guidelines}{29}
+\contentsline {chapter}{\numberline {B}Contents of the CD}{31}
