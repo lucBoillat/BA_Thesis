@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.20)  4 JAN 2018 20:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.20)  5 JAN 2018 18:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -578,14 +578,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--54
 ]) [3] [4
 
 ] (./main.toc
-[5])
+[5] [6])
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
- [6] (./introduction.tex
+ [7] [8
+
+] (./introduction.tex
 Chapter 1.
 [1
-
 
 ]) (./relatedwork.tex [2]
 Chapter 2.
@@ -600,46 +601,50 @@ LaTeX Font Warning: Font shape `TS1/aer/m/n' undefined
 (Font)              using `TS1/cmr/m/n' instead
 (Font)              for symbol `textbullet' on input line 11.
 
-[4] <blockexplorer.png, id=61, 1236.62pt x 888.31876pt>
+[4] [5] <blockexplorer.png, id=71, 1236.62pt x 888.31876pt>
 File: blockexplorer.png Graphic file (type png)
 
 <use blockexplorer.png>
 Package pdftex.def Info: blockexplorer.png used on input line 52.
 (pdftex.def)             Requested size: 455.24408pt x 327.01913pt.
- <etherscan.png, id=63, 665.98813pt x 478.28688pt>
+ <etherscan.png, id=73, 665.98813pt x 478.28688pt>
 File: etherscan.png Graphic file (type png)
 
 <use etherscan.png>
 Package pdftex.def Info: etherscan.png used on input line 61.
 (pdftex.def)             Requested size: 455.24408pt x 326.94582pt.
-) (./mainchapters.tex [5] [6 <./blockexplorer.png>] [7 <./etherscan.png>] [8]
-Chapter 3.
-[9
 
-] <usecase1.png, id=82, 921.4425pt x 827.09pt>
+Underfull \vbox (badness 2856) has occurred while \output is active []
+
+ [6 <./blockexplorer.png>] [7 <./etherscan.png>] [8]) (./mainchapters.tex [9] [
+10
+
+]
+Chapter 3.
+[11] <usecase1.png, id=95, 921.4425pt x 827.09pt>
 File: usecase1.png Graphic file (type png)
  <use usecase1.png>
 Package pdftex.def Info: usecase1.png used on input line 27.
 (pdftex.def)             Requested size: 455.24408pt x 408.62204pt.
 
-<system.png, id=83, 889.3225pt x 531.9875pt>
+<system.png, id=96, 889.3225pt x 531.9875pt>
 File: system.png Graphic file (type png)
  <use system.png>
 Package pdftex.def Info: system.png used on input line 39.
 (pdftex.def)             Requested size: 455.24408pt x 272.32472pt.
- [10] [11 <./usecase1.png>] [12 <./system.png>]
+ [12] [13 <./usecase1.png>] [14 <./system.png>]
 Chapter 4.
-[13
+[15
 
-]) (./evaluation.tex [14]
+]) (./evaluation.tex [16]
 Chapter 5.
-) (./summary.tex [15
+) (./summary.tex [17
 
-] [16
+] [18
 
 ]
 Chapter 6.
-) (./bibliography.tex [17] [18
+) (./bibliography.tex [19] [20
 
 ]
 LaTeX Font Info:    Try loading font information for T1+aett on input line 4.
@@ -647,37 +652,37 @@ LaTeX Font Info:    Try loading font information for T1+aett on input line 4.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ))
-(./abbreviations.tex [19] [20
+(./abbreviations.tex [21] [22
 
 ]) (./glossary.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--1
 
  []
 
-[21] [22
+[23] [24
 
-]) [23] [24
+]) [25] [26
 
 ] (./main.lof)
 \tf@lof=\write5
 \openout5 = `main.lof'.
 
- [25] [26
+ [27] [28
 
 ] (./main.lot)
 \tf@lot=\write6
 \openout6 = `main.lot'.
 
  (./appendix.tex
-[27] [28
-
-]
-Appendix A.
 [29] [30
 
 ]
+Appendix A.
+[31] [32
+
+]
 Appendix B.
-) [31] (./main.aux)
+) [33] (./main.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -685,11 +690,11 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  4901 strings out of 492995
  65341 string characters out of 6132703
- 135066 words of memory out of 5000000
+ 135067 words of memory out of 5000000
  8220 multiletter control sequences out of 15000+600000
  51873 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,6n,27p,1543b,274s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,6n,27p,1543b,325s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/tex
@@ -702,10 +707,10 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texlive
 7/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf
 -dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/f
 onts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (39 pages, 583512 bytes).
+Output written on main.pdf (43 pages, 588636 bytes).
 PDF statistics:
- 196 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
+ 209 PDF objects out of 1000 (max. 8388607)
+ 140 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
