@@ -1,8 +1,9 @@
 \chapter{Design} \label{chap:design}
-This chapter covers the design of the blockchain explorer and the additional components necessary to run the application.
+This chapter covers the design decisions taken for the Bazo Blockchain Explorer web app and the additional components necessary to run the application.
 
 \section{Requirements for the Bazo Blockchain Explorer}
-Based on the analysis performed in \ref{analysis} and meetings held with members from the financial service provider and the University of Zurich, the following functional requirements were elicited:
+Based on the analysis performed in \ref{analysis} and meetings held with members from the financial service provider and the University of Zurich, the use cases listed in figure \ref{fig:usecase1} and the following functional requirements were elicited:
+
 \begin{itemize}
 \item \textbf{Blocks}
 A user should be able to view all validated blocks of the blockchain and the information they contain. In a list-view, the most recent blocks are being displayed, identified by their respective hashes and timestamps. If a user wants to get more comprehensive information about a block, he can display one block in a detailed-view, where additional information, such as all the transaction hashes contained in this block or the address hash of the block-reward beneficiary are presented.
@@ -16,45 +17,94 @@ A user should be able to search for blockchain data using hashes. These hashes c
 Featured on every page of the application, a navbar, that lets a user access all functionality of the website, is required. This functionality includes, among others, links to lists of blocks, transactions and accounts. The search-functionality is also located here, being available at all times to the user.
 \item \textbf{Statistical Information}
 The system should calculate statistical information about the network and make it available to users. This includes information such as a graphical history of transactions, or the total amount of Bazo Coins currently in the system.
-\item \textbf{Status}
 \item \textbf{Admin Panel}
-Only available to admins of the system, a panel that lets them change system parameters using System Configuration Transactions has to be implemented. These transactions get sent via an interface to the network, meaning no bazo{\_}client is running on the server of the website.
+Only available to admins of the system, a panel that lets them change system parameters using System Configuration Transactions has to be implemented. These transactions get sent via an interface to the network, meaning no Bazo Client is running on the server of the website.
 \item \textbf{Fetch and Store Blockchain Data}
 The application needs to automatically gather the latest Bazo Blockchain data and save it independently from the blockchain. This data also needs to be formatted, in order to make it publicly available. 
 \end{itemize}
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{usecase1.png}
+  \includegraphics[scale=0.35]{usecase1.png}
+  \centering
   \caption{Use Cases of the Block Explorer}
   \label{fig:usecase1}
 \end{figure}
 
 \section{Structure of the Service}
-The main component of the Bazo Blockchain Explorer that users and admins use to view Bazo blockchain data is a web app, which is made up of a front- and a backend. However, to run the blockchain explorer on its own, additional components beside the front- and backend components are required. The app fetches blockchain data from a database that runs independently from the blockchain miner's built-in storage. A separate database was chosen, because additional data like statistical information needs to be calculated and stored as well, which would bloat all miner's built-in databases with information, if implemented in the miner. This also makes running the website possible without having a miner running in the backend of the web app. This however, requires a component that copies data from a running Bazo mining node's storage and stores it in the new database. As mentioned above, the backend accesses this database by making queries for relevant data and sending the results to the frontend to be displayed to the user.
-In order to send System Configuration Transactions from the app, an interface 
-
-The Bazo Blockchain Explorer 
+The main component of the Bazo Blockchain Explorer that users and admins use to view Bazo Blockchain data is a web app, which is made up of a front- and a backend. However, to run the blockchain explorer on its own, additional components beside the front- and backend components are required. Highlighted in red in figure \ref{fig:structure} are the components that were implemented as part of this thesis. The app fetches blockchain data from a database that runs independently from the blockchain miner's built-in storage. A separate database was chosen, because additional data like statistical information needs to be calculated and stored as well, which would bloat all miner's built-in databases with information, if implemented in the miner. This also makes running the website possible without having a miner running in the backend of the web app. However, this requires a component that copies data from a running Bazo mining node's storage and stores it in the new database. As mentioned above, the backend accesses this database by making queries for relevant data and sending the results to the frontend to be displayed to the user. In order to fulfil the requirement of being able to send System Configuration Transactions from the application, an interface that acts as an extension for a Bazo Client is required. With the use of this interface, signing transactions without a running Bazo Client will be made possible.
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{system.png}
+  \includegraphics[scale=0.4]{system.png}
+  \centering
   \caption{Structure of the Whole System}
   \label{fig:structure}
 \end{figure}
 
-\section{Structure of the Website}
+\section{Web Application}
+The user interface of the application always displays the most recent blockchain data. In order to structurally separate the functionality and to fulfil the requirements, specific pages featuring the following content need to be included in the application:
 
+\begin{itemize}
+\item{Landing page}
+\item{List of Most Recent Blocks}
+\item{Detailed Block}
+\item{List of Most Recent Funds Transactions}
+\item{Detailed Funds Transaction}
+\item{List of Most Recent Account Creation Transactions}
+\item{Detailed Account Creation Transaction}
+\item{List of Most Recent Configuration Transaction}
+\item{Detailed Configuration Transaction}
+\item{List of Most Affluent Accounts}
+\item{Detailed Account}
+\item{Statistical Information}
+\item{Administrator Panel}
+\end{itemize}
+
+From a list-view of an data-type, each individual item can be accessed. The goal is to first, provide the user with a list view of a data-type, such as blocks. Once he finds an object of interest, he clicks on the hash of the block, which is its unique identifier, and gets presented with detailed information about that object. Depending on the data-type, the user is viewing, links to related elements enable further browsing of the data. For example, on the detailed block page, a link to the detailed account page of the account that received the block reward of said block, is listed.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{mockup1.png}
+  \centering
+  \caption{Mockup of the List of Most Recent Blocks}
+  \label{fig:mockup1}
+\end{figure}
+
+\subsection{Navbar and Search}
+
+\begin{figure}
+  \includegraphics[scale=0.35]{navbarmockup.png}
+  \centering
+  \caption{Functionality and Links on the Navbar}
+  \label{fig:navbar}
+\end{figure}
+
+The navbar is featured on every page of the application. Figure \ref{fig:navbar} displays all possible pages that are accessible from the navbar and the their respective detailed pages. Since there are multiple types of transactions, a dropdown menu on the \emph{Transactions} button, displays links to list-views of all types of transactions. The administrator panel is also accessed from here. Included in the navbar, is the search function. A user can enter a hash and the backend of the application searches for that hash in the database. A successful search will automatically present the data to the user in the right formatting, meaning the system displays the page according to the data type of the search result.
+
+\subsection{Tables}
+Every page that features blocks, transactions and accounts needs a table that displays that data.
+
+\subsection{Landing Page}
+
+\subsection{Administrator Panel}
+
+\section{Interface}
+
+\section{Database Management}
+
+\subsection{Data Transfer}
+The component that handles the copying of all blockchain data, is integrated into the backend of the web app. In an interval defined by the operator, it checks whether any new blocks have been mined on the blockchain. 
+\subsection{Database}
 
 \chapter{Implementation}
 This chapter documents the implementation of the components listed in chapter \ref{chap:design}; Frontend, Backend and the SQL database. An additional section concerning hosting of the application on the internet is also included.
 \section{Frontend}
-XXX
+The frontend of the application is the interface, the user interacts with. 
 \subsection{HTML Templates}
 To interact with the Golang-Backend of the application, Gohtml templates have been used to define the markup of the application. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser. Except for some Bootstrap functionality mentioned in \ref{sec:uiframeworks} and one case discussed in section \ref{sec:clientside}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
 
 \subsubsection{Reusable Modules}
 \begin{itemize}
 \item \textbf{Navbar}
-\item \textbf{Head}
+\item \textbf{HTML Head}
 \item \textbf{Login Modal}
 \item \textbf{Transaction Modal}
 \item \textbf{Script Imports}
@@ -62,17 +112,40 @@ To interact with the Golang-Backend of the application, Gohtml templates have be
 
 \subsection{Bootstrap} \label{sec:uiframeworks}
 
+To style the majority of the website, Bootstrap v4 was used extensively.
 \subsection{Client-Side Logic} \label{sec:clientside}
 
-\subsubsection{Process}
+\subsubsection{Transaction Signing} \label{txsigning}
+A requirement of the Bazo Blockchain Explorer is to be able to send System Configuration Transactions from the browser. 
+However, since no Bazo Client should run in the backend of the application, the ability to build and sign transactions is not provided. A Bazo Client takes transaction details and the private key of the sender in order to build a transaction. Extracting only the transaction signing functionality of the Bazo Client and implementing it into the backend of the explorer would violate security constraints, since the private key would have to be sent over the network to the server. The private key should always stay with the user and never leave his device. This is where the Bazo Interface comes in place, a REST API that builds an unfinished transaction hash using the transaction details without the issuer's private key. In a second step the user enters his private key in order to sign the transaction client-side and then send it back to the Interface, which then publishes it to the network.
+
+\begin{figure}
+  \includegraphics[scale=0.35]{transactionbuilding.png}
+  \centering
+  \caption{Sequence Diagram of How the Application Builds and Signs Transactions}
+  \label{fig:sequence1}
+\end{figure}
+
+The process is detailed in \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administator panel, which are linked to a Vue.js application. In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie (user verification is described in \ref{verificaiton}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format, of which the \emph{isRoot} attribute is important. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
+
 
 \section{Backend}
-
+The backend of the web app is written in Golang, which is well suited for writing web applications, due to its included http and HTML packages. Since the Bazo Blockchain was also written in Golang, compability between the two programs was ensured. The program is split up into distinct files, to separate functionality. 
 \subsection{Router}
+The router handles all requests made to the application. On startup, the router gets initialized and registers all possible routes. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request.
+Additionally to the built-in net/http package included in Golang, HttpRouter by Julien Schmidt has been used as well. 
+
+In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.
+
+
+\subsubsection{Administrator Verification} \label{verification}
+
+By design, only administrators of the system can successfully publish a System Configuration Transaction to the network, since only they possess a root private key that lets them sign the transactions. However, using a Bazo Client, a non-root user may still spam the network with admin-only transactions, without them ever getting accepted by the system. Therefore implementing a thorough login-system on the explorer that requests a user's private key to verify whether he has administrator rights, in order to prevent non-administrator users from trying to publish transactions to the network seemed unnecessary. This would have also meant that a private key would get send over the network to check its access rights. The chosen verification process is as follows:
+Upon requesting to log in, a user enters a public key. This public key then gets sent to the Bazo Interface, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning}. 
 
 \subsection{SQL-Queries}
 
-\subsection{GetData/Formatter}
+\subsection{Data Transfer}
 
 \subsection{Structs}
 
