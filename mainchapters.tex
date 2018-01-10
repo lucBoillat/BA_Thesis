@@ -8,7 +8,7 @@ Based on the analysis performed in \ref{analysis} and meetings held with members
 \item \textbf{Blocks}
 A user should be able to view all validated blocks of the blockchain and the information they contain. In a list-view, the most recent blocks are being displayed, identified by their respective hashes and timestamps. If a user wants to get more comprehensive information about a block, he can display one block in a detailed-view, where additional information, such as all the transaction hashes contained in this block or the address hash of the block-reward beneficiary are presented.
 \item \textbf{Transactions}
-Similarly to the requirement above, a user should be able to view all validated transactions that have been broadcasted by him or other users of the blockchain. Due to the Bazo system having 3 different types of transactions (Funds Transactions, Account Creation Transactions and System Configuration Transactions), different implementations for each of them have to be made. A list-view displays the most recent transactions of each type, offering information such as the sender, receiver and the amount of the transactions. Detailed views for all transaction types are needed as well, presenting more information, for example each transaction's signature or block it is contained in.
+Similarly to the requirement above, a user should be able to view all validated transactions that have been broadcasted by him or other users of the blockchain. Due to the Bazo system having 4 different types of transactions (Funds Transactions, Account Creation Transactions and System Configuration Transactions from the original Bazo paper \cite{bazo} and Stake Transactions from the Proof-of-Stake implementation \cite{pos}), different implementations for each of them have to be made. A list-view displays the most recent transactions of each type, offering information such as the sender, receiver and the amount of the transactions. Detailed views for all transaction types are needed as well, presenting more information, for example each transaction's signature or block it is contained in.
 \item \textbf{Accounts}
 With Bazo using an account-based model, every user that actively interacts with the blockchain owns an account. The application should maintain a state of all accounts, that gets updated with every newly mined block. A list with the most affluent accounts should be made available, as well as a detailed view of for single accounts, which displays all transactions this account was either the sender or receiver of.
 \item \textbf{Search}
@@ -18,9 +18,9 @@ Featured on every page of the application, a navbar, that lets a user access all
 \item \textbf{Statistical Information}
 The system should calculate statistical information about the network and make it available to users. This includes information such as a graphical history of transactions, or the total amount of Bazo Coins currently in the system.
 \item \textbf{Admin Panel}
-Only available to admins of the system, a panel that lets them change system parameters using System Configuration Transactions has to be implemented. These transactions get sent via an interface to the network, meaning no Bazo Client is running on the server of the website.
+Only available to admins of the system, a panel that lets them change system parameters using System Configuration Transactions has to be implemented. These transactions get sent via an interface \cite{marc} to the network, meaning no Bazo Client is running on the server of the website.
 \item \textbf{Fetch and Store Blockchain Data}
-The application needs to automatically gather the latest Bazo Blockchain data and save it independently from the blockchain. This data also needs to be formatted, in order to make it publicly available. 
+The application needs to automatically gather the latest Bazo Blockchain data and save it independently from the blockchain. This data also needs to be correctly formatted, in order to make it accessible to the users. 
 \end{itemize}
 
 \begin{figure}
@@ -44,8 +44,7 @@ The main component of the Bazo Blockchain Explorer that users and admins use to 
 The operator of the blockchain hosts the system, which in this case is connected to a miner that also belongs to the operator. Due to the open-source nature of the block explorer however, anyone can run and host a Bazo Blockchain Explorer on his or her servers and connect to a miner of choice. A discussion about whether the miners, to which the explorer connects, need to be trusted or not, is not required, since (1) the operator has no interest in presenting its users falsified data, (2) in case doubt arises about the data's authenticity, anyone can host his own explorer, and (3) from a user's perspective, the explorer only \emph{consumes} data from the blockchain. The running Bazo blockchain is therefore not affected by any block explorers.
 
 \section{Web Application}
-A web application was chosen, because of its accessibility and its convenience. Users do not need to download software or store data on their devices to inspect the blockchain. 
-The user interface of the application always displays the most recent blockchain data.  In order to structurally separate the functionality and to fulfil all requirements, specific pages featuring the following content need to be included in the application:
+A web application was chosen, because of its accessibility and its convenience. Users do not need to download software or store data on their devices to inspect the blockchain. The user interface of the application always displays the most recent blockchain data.  In order to structurally separate the functionality and to fulfil all requirements, specific pages featuring the following content need to be included in the application:
 
 \begin{itemize}
 \item{List of Most Recent Blocks}
@@ -86,42 +85,46 @@ The navbar is featured on every page of the application. Figure \ref{fig:navbar}
 Keeping URLs as simple as possible was a priority. Since a specific object may only be identified by its hash or its address, either is the only variable that is needed in a URL for specific objects.
 
 \subsection{Administrator Panel}
-Since there currently are five different types of System Configuration Transactions, a \emph{Submit} form for every type needs to be available on the administrator panel. Depending on which administrator is currently logged in and using the panel, account information, such as the current transaction count and public key of the administrator, do not need to be entered in the transaction forms. These values get automatically included in the transactions are are derived from the public key, the administrator entered to log in. Detailed information about the verification process can be found in \ref{verification}. The administrator enters the payload for the transaction he wishes to send and the transaction fee. The panel also displays all current system parameters and updates them after each validated System Configuration Transaction. 
+Since there currently are five different types of System Configuration Transactions defined by IDs 1 through 5 \cite{bazo}, a \emph{Submit} form for every type needs to be available on the administrator panel. Depending on which administrator is currently logged in and using the panel, account information, such as the current transaction count and public key of the administrator, do not need to be entered in the transaction forms. These values get automatically included in the transactions are are derived from the public key, the administrator entered to log in. Detailed information about the verification process can be found in \ref{cookies}. The administrator enters the payload for the transaction he wishes to send and the transaction fee. The application validates the user input before sending transaction details. The panel also displays all current system parameters and updates them after each validated System Configuration Transaction. 
 
 \subsection{Statistical Information}
 On this section of the application, users can view data about the overall health and productivity of the Bazo blockchain. A chart featuring a 14-Day transaction history visualizes how frequently the Bazo system is used, as well as shows, whether usage increases over time of operation. Information regarding total Bazo Coin supply and the total number of Bazo accounts is also provided, since viewing accounts and their balances by all users, is possible anyway. The statistical information is updated in a regular interval, to match the recent blockchain data.
 
-\section{Database Management}
-A relational database was chosen for the explorer, because the data that gets saved always has the same format. Efficiently sorting data by an attribute, is an ability that is needed in order to provide a responsive user experience. Ideally the database is hosted on the same server, as the block explorer is, to ensure optimal read and write times. 
-\subsection{Data Transfer}
-The component that handles the copying of all blockchain data, is integrated into the backend of the web app. In an interval defined by the operator, it checks whether any new blocks have been mined on the blockchain. 
-\subsection{Database}
-For every data type, a table in the database is defined. While saving each new block, every transaction contained in that block is saved in the database as well. 
+\section{Database}
+A relational database was chosen for the explorer, because the data that gets saved always has the same format. Efficiently sorting data by an attribute, is an ability that is needed in order to provide a responsive user experience. Ideally the database is hosted on the same server, as the block explorer is, to ensure optimal read and write times. Functions to read and write single items to the database need to be available, as well as functions that return multiple rows of data. In the case of presenting statistical information to the user, this information needs to be calculated with the data from the database.
 
 \chapter{Implementation}
-This chapter documents the implementation of the components listed in chapter \ref{chap:design}; Frontend, Backend and the SQL database. An additional section concerning hosting of the application on the internet is also included.
+This chapter documents the implementation of the components listed in chapter \ref{chap:design} and how they interact with each other. An additional section concerning hosting of the application on the internet is also included. GO INTRODUCTION AND LIBRARIES
 \section{Frontend}
 The frontend of the application is the interface, the user interacts with. 
 \subsection{HTML Templates}
-To interact with the Golang-Backend of the application, Gohtml templates have been used to define the markup of the application. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser. Except for some Bootstrap functionality mentioned in \ref{sec:uiframeworks} and one case discussed in section \ref{sec:clientside}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
+To interact with the Golang-Backend of the application, Gohtml templates \cite{template} have been used to define the markup of the pages. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser \cite{httppackage}. Except for some Bootstrap \cite{bootstrap} functionality mentioned in \ref{sec:uiframeworks} and one case discussed in section \ref{sec:clientside}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
 
 \subsubsection{Reusable Modules}
 \begin{itemize}
 \item \textbf{Navbar}
 \item \textbf{HTML Head}
-\item \textbf{Login Modal}
-\item \textbf{Transaction Modal}
+\item \textbf{Public Key Modal}
+\item \textbf{Private Key Modal}
 \item \textbf{Script Imports}
 \end{itemize}
 
-\subsection{Bootstrap} \label{sec:uiframeworks}
+\subsection{Handling Passed Variables}
+If the backend of the application passes any variable to a template, Gohtml templates can render these variables by including ``\{\{ . \}\}'' in the template. Golang code is delimited by curly braces inside templates. The period is the placeholder, the passed variable replaces, before being rendered to HTML. When passing a struct to a template, all attributes of the struct can be accessed, by appending the attribute name to the period. In order to pass different structs to the template, such as in the landing page's case, where slices of blocks \emph{and} slices of transactions are passed, structs containing structs need to be defined, since only one object can be passed to the template.
+PSEUDOCODE SHOWCASING RANGE, END FUNCITONALITY
 
-To style the majority of the website, Bootstrap v4 was used extensively.
+\subsection{UI Framework} \label{sec:uiframeworks}
+In the beginning of development, a custom CSS built from scratch was created to style the application, however, due to concerns about usability and overall presentation of the website, the Bootstrap v4 UI Framework \cite{bootstrap} was chosen as a replacement and enhancement of the original styling.
+``Originally created by a designer and a developer at Twitter, Bootstrap has become one of the most popular front-end frameworks and open source projects in the world.'' \cite{bootstraphistory}
+It offers a wide variety of content and components to quickly build a responsive user interface. Most components are defined in the Bootstrap CSS, however for some client-side funcitonality, JavaScript can be enabled. Block explorer pages are heavily dependent on Bootstrap, since all UI components use Bootstrap classes. In cases where further styling was needed, a separate CSS overwrites Bootstrap stylings, for example the width of the Search Bar had to be manually widened. In some tables, inline styling in their HTML was used, when certain columns needed to have fixed widths.
+
 \subsection{Client-Side Logic} \label{sec:clientside}
+
+\subsubsection{Vue.js \cite{vue} and Libraries}
 
 \subsubsection{Transaction Signing} \label{txsigning}
 A requirement of the Bazo Blockchain Explorer is to be able to send System Configuration Transactions from the browser. 
-However, since no Bazo Client should run in the backend of the application, the ability to build and sign transactions is not provided. A Bazo Client takes transaction details and the private key of the sender in order to build a transaction. Extracting only the transaction signing functionality of the Bazo Client and implementing it into the backend of the explorer would violate security constraints, since the private key would have to be sent over the network to the server. The private key should always stay with the user and never leave his device. This is where the Bazo Interface comes in place, a REST API that builds an unfinished transaction hash using the transaction details without the issuer's private key. In a second step the user enters his private key in order to sign the transaction client-side and then send it back to the Interface, which then publishes it to the network.
+However, since no Bazo Client should run in the backend of the application, the ability to build and sign transactions is not provided. A Bazo Client takes transaction details and the private key of the sender in order to build a transaction. Extracting only the transaction signing functionality of the Bazo Client and implementing it into the backend of the explorer would violate security constraints, since the private key would have to be sent over the network to the server. The private key should always stay with the user and never leave his device. This is where the Bazo Interface \cite{marc} comes in place, a REST API that builds an unfinished transaction hash using the transaction details without the issuer's private key. In a second step the user enters his private key in order to sign the transaction client-side and then send it back to the Interface, which then publishes it to the network.
 
 \begin{figure}
   \includegraphics[scale=0.35]{transactionbuilding.png}
@@ -130,34 +133,38 @@ However, since no Bazo Client should run in the backend of the application, the 
   \label{fig:sequence1}
 \end{figure}
 
-The process is detailed in \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administator panel, which are linked to a Vue.js application. In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie (user verification is described in \ref{verificaiton}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format, of which the \emph{isRoot} attribute is important. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
+The process is detailed in figure \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administrator panel, which are linked to a Vue.js application \cite{vue} . In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie \cite{vcookies} (user verification is described in \ref{verification}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format \cite{json} , of which the \emph{isRoot} attribute is important to the application. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing \cite{elliptic}, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
 
 
 \section{Backend}
-The backend of the web app is written in Golang, which is well suited for writing web applications, due to its included http and HTML packages. Since the Bazo Blockchain was also written in Golang, compability between the two programs was ensured. The program is split up into distinct files, to separate functionality. 
+The backend of the web app is written in Golang \cite{golang}, which is well suited for writing web applications, due to its included http \cite{httppackage}and HTML \cite{template} packages. Since the Bazo Blockchain was also written in Golang \cite{bazo}, compability between the two programs was ensured. The program is split up into distinct files, to separate functionality. GO??
+\subsection{Packages of the Block Explorer}
+The Golang code of the block explorer is split up into...
+GRAPHIC
 \subsection{Router}
-The router handles all requests made to the application. On startup, the router gets initialized and registers all possible routes. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request.
-Additionally to the built-in net/http package included in Golang, HttpRouter by Julien Schmidt has been used as well. 
+The router handles all requests made to the application. On startup, the router gets initialized and registers all possible routes. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}.
+Additionally to the built-in http package in Golang, HttpRouter by Julien Schmidt \cite{httprouter} has been used as well. 
 
-In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.
+``In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.'' \cite{httprouter}
 
-HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be listed in a well-structured way.
+HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be defined in a well-structured way. Except for the \emph{/login} and \emph{/search} routes, which are called using POST methods, all routes are called via GET request.
 
 
-\subsubsection{Administrator Verification} \label{verification}
+\subsection{Cookies} \label{cookies}
 
 By design, only administrators of the system can successfully publish a System Configuration Transaction to the network, since only they possess a root private key that lets them sign the transactions. However, using a Bazo Client, a non-root user may still spam the network with admin-only transactions, without them ever getting accepted by the system. Therefore implementing a thorough login-system on the explorer that requests a user's private key to verify whether he has administrator rights, in order to prevent non-administrator users from trying to publish transactions to the network seemed unnecessary. This would have also meant that a private key would get send over the network to check its access rights. The chosen verification process is as follows:
-Upon requesting to log in, a user enters a public key. This public key then gets sent to the Bazo Interface, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning}. 
+Upon requesting to log in, a user enters a public key. This public key then gets sent to the Bazo Interface \cite{marc}, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning}. 
 
-\subsection{SQL-Queries}
+\subsection{Concurrency}
+The application makes use of Golang's built-in concurrency functionality. By calling \emph{runDB()} in the main function as a Goroutine by appending the keyword \emph{go}, the mechanism that automatically updates the database with new blockchain data, runs separately from the router's request handling.
+
+\subsection{Structs}
+Hashes and other generated values in the Bazo blockchain are stored using fixed-sized byte-slices. This has several drawbacks in terms of usability, since they first have to be converted into strings by representing each byte in its hexadecimal value and concatenating all hex values, when displayed to the user. Because of difficulty preserving the byte-slices while storing them in a PSQL database, and the fact that users search for string representations of these values, all blockchain data first gets converted to human-readable form before saving it in the database. Additionally for easier data-management, all entries in all transaction tables now have added \emph{BlockHash} and \emph{Timestamp} attributes, since using raw blockchain data, transactions could not be traced back to a block or a mining date.
+
+\subsubsection{Conversions}
 
 \subsection{Data Transfer}
 
-\subsection{Structs}
-In order to store the data in the database, additional structs for all data types needed to be defined. 
-
-\section{PSQL Database}
-
-\subsection{Tables}
+\subsubsection{Procedure for Saving a Block}
 
 \section{Hosting}
