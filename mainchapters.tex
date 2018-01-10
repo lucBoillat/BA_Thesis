@@ -31,20 +31,23 @@ The application needs to automatically gather the latest Bazo Blockchain data an
 \end{figure}
 
 \section{Structure of the Service}
-The main component of the Bazo Blockchain Explorer that users and admins use to view Bazo Blockchain data is a web app, which is made up of a front- and a backend. However, to run the blockchain explorer on its own, additional components beside the front- and backend components are required. Highlighted in red in figure \ref{fig:structure} are the components that were implemented as part of this thesis. The app fetches blockchain data from a database that runs independently from the blockchain miner's built-in storage. A separate database was chosen, because additional data like statistical information needs to be calculated and stored as well, which would bloat all miner's built-in databases with information, if implemented in the miner. This also makes running the website possible without having a miner running in the backend of the web app. However, this requires a component that copies data from a running Bazo mining node's storage and stores it in the new database. As mentioned above, the backend accesses this database by making queries for relevant data and sending the results to the frontend to be displayed to the user. In order to fulfil the requirement of being able to send System Configuration Transactions from the application, an interface that acts as an extension for a Bazo Client is required. With the use of this interface, signing transactions without a running Bazo Client will be made possible.
+The main component of the Bazo Blockchain Explorer that users and admins use to view Bazo Blockchain data is a web app, which is made up of a front- and a backend. However, to run the blockchain explorer on its own, additional components beside the front- and backend components are required. Highlighted in red in figure \ref{fig:structure} are the components that were implemented as part of this thesis. The app fetches blockchain data from a database that runs independently from the blockchain miner's built-in storage. A separate database was chosen, because additional data like statistical information needs to be calculated and stored as well, which would bloat all miner's built-in databases with information, if implemented in the miner. This also makes running the website possible without having a miner running in the backend of the web app. However, this requires a component that copies data from a running Bazo mining node's storage and stores it in the new database. As mentioned above, the web app's backend accesses this database by making queries for relevant data and sending the results to the frontend to be displayed to the user. In order to fulfil the requirement of being able to send System Configuration Transactions from the application, an interface that acts as an extension for a Bazo Client is required. With the use of this interface, signing transactions without a running Bazo Client will be made possible.
 
 \begin{figure}
   \includegraphics[scale=0.4]{system.png}
   \centering
-  \caption{Structure of the Whole System}
+  \caption{Structure of the Blockexplorer and Bazo Components}
   \label{fig:structure}
 \end{figure}
 
+\subsection{Trust}
+The operator of the blockchain hosts the system, which in this case is connected to a miner that also belongs to the operator. Due to the open-source nature of the block explorer however, anyone can run and host a Bazo Blockchain Explorer on his or her servers and connect to a miner of choice. A discussion about whether the miners, to which the explorer connects, need to be trusted or not, is not required, since (1) the operator has no interest in presenting its users falsified data, (2) in case doubt arises about the data's authenticity, anyone can host his own explorer, and (3) from a user's perspective, the explorer only \emph{consumes} data from the blockchain. The running Bazo blockchain is therefore not affected by any block explorers.
+
 \section{Web Application}
-The user interface of the application always displays the most recent blockchain data. In order to structurally separate the functionality and to fulfil the requirements, specific pages featuring the following content need to be included in the application:
+A web application was chosen, because of its accessibility and its convenience. Users do not need to download software or store data on their devices to inspect the blockchain. 
+The user interface of the application always displays the most recent blockchain data.  In order to structurally separate the functionality and to fulfil all requirements, specific pages featuring the following content need to be included in the application:
 
 \begin{itemize}
-\item{Landing page}
 \item{List of Most Recent Blocks}
 \item{Detailed Block}
 \item{List of Most Recent Funds Transactions}
@@ -59,7 +62,7 @@ The user interface of the application always displays the most recent blockchain
 \item{Administrator Panel}
 \end{itemize}
 
-From a list-view of an data-type, each individual item can be accessed. The goal is to first, provide the user with a list view of a data-type, such as blocks. Once he finds an object of interest, he clicks on the hash of the block, which is its unique identifier, and gets presented with detailed information about that object. Depending on the data-type, the user is viewing, links to related elements enable further browsing of the data. For example, on the detailed block page, a link to the detailed account page of the account that received the block reward of said block, is listed.
+From a list-view of a data-type, each individual item can be accessed. The goal is to first, provide the user with a list view of a data-type, such as blocks. Once he finds an object of interest, he clicks on the hash of the block, which is its unique identifier, and gets presented with detailed information about that object. Depending on the data-type, the user is viewing, links to related elements enable further browsing of the data. For example, on a detailed block page, a link to the detailed account page of the account that received the block reward of said block, is listed. Since all different types of blockchain data have their own data structures, custom tables for all listed pages, that contain data need to be built. In figure \ref{fig:mockup1}, a mockup of the table containing the most recent blocks is displayed. The block's hash, the timestamp when it was mined and the counters for each transaction type are listed. Each single block hash links to the detailed page of that block. On the detailed block page, all transaction hashes that are included in a block, are ordered by type and displayed in a list. Similarly on a detailed account's page, all transactions related to that account are displayed as well.
 
 \begin{figure}
   \includegraphics[width=\linewidth]{mockup1.png}
@@ -70,6 +73,8 @@ From a list-view of an data-type, each individual item can be accessed. The goal
 
 \subsection{Navbar and Search}
 
+The navbar is featured on every page of the application. Figure \ref{fig:navbar} displays all possible pages that are accessible from the navbar and the their respective detailed pages. Since there are multiple types of transactions, a dropdown menu on the \emph{Transactions} button, displays links to list-views of all types of transactions. The administrator panel is also accessed from here. Included in the navbar, is the search function. A user can enter a hash and the backend of the application searches for that hash in the database. A successful search will automatically present the data to the user in the right formatting, meaning the system displays the page according to the data type of the search result. It is possible to search for blocks, all transaction types, account hashes and account addresses, since Bazo uses both hashes and addresses to identify an account.
+
 \begin{figure}
   \includegraphics[scale=0.35]{navbarmockup.png}
   \centering
@@ -77,22 +82,21 @@ From a list-view of an data-type, each individual item can be accessed. The goal
   \label{fig:navbar}
 \end{figure}
 
-The navbar is featured on every page of the application. Figure \ref{fig:navbar} displays all possible pages that are accessible from the navbar and the their respective detailed pages. Since there are multiple types of transactions, a dropdown menu on the \emph{Transactions} button, displays links to list-views of all types of transactions. The administrator panel is also accessed from here. Included in the navbar, is the search function. A user can enter a hash and the backend of the application searches for that hash in the database. A successful search will automatically present the data to the user in the right formatting, meaning the system displays the page according to the data type of the search result.
-
-\subsection{Tables}
-Every page that features blocks, transactions and accounts needs a table that displays that data.
-
-\subsection{Landing Page}
+\subsection{URL-Scheme}
+Keeping URLs as simple as possible was a priority. Since a specific object may only be identified by its hash or its address, either is the only variable that is needed in a URL for specific objects.
 
 \subsection{Administrator Panel}
+Since there currently are five different types of System Configuration Transactions, a \emph{Submit} form for every type needs to be available on the administrator panel. Depending on which administrator is currently logged in and using the panel, account information, such as the current transaction count and public key of the administrator, do not need to be entered in the transaction forms. These values get automatically included in the transactions are are derived from the public key, the administrator entered to log in. Detailed information about the verification process can be found in \ref{verification}. The administrator enters the payload for the transaction he wishes to send and the transaction fee. The panel also displays all current system parameters and updates them after each validated System Configuration Transaction. 
 
-\section{Interface}
+\subsection{Statistical Information}
+On this section of the application, users can view data about the overall health and productivity of the Bazo blockchain. A chart featuring a 14-Day transaction history visualizes how frequently the Bazo system is used, as well as shows, whether usage increases over time of operation. Information regarding total Bazo Coin supply and the total number of Bazo accounts is also provided, since viewing accounts and their balances by all users, is possible anyway. The statistical information is updated in a regular interval, to match the recent blockchain data.
 
 \section{Database Management}
-
+A relational database was chosen for the explorer, because the data that gets saved always has the same format. Efficiently sorting data by an attribute, is an ability that is needed in order to provide a responsive user experience. Ideally the database is hosted on the same server, as the block explorer is, to ensure optimal read and write times. 
 \subsection{Data Transfer}
 The component that handles the copying of all blockchain data, is integrated into the backend of the web app. In an interval defined by the operator, it checks whether any new blocks have been mined on the blockchain. 
 \subsection{Database}
+For every data type, a table in the database is defined. While saving each new block, every transaction contained in that block is saved in the database as well. 
 
 \chapter{Implementation}
 This chapter documents the implementation of the components listed in chapter \ref{chap:design}; Frontend, Backend and the SQL database. An additional section concerning hosting of the application on the internet is also included.
