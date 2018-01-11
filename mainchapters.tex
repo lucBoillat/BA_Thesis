@@ -82,7 +82,20 @@ The navbar is featured on every page of the application. Figure \ref{fig:navbar}
 \end{figure}
 
 \subsection{URL-Scheme}
-Keeping URLs as simple as possible was a priority. Since a specific object may only be identified by its hash or its address, either is the only variable that is needed in a URL for specific objects.
+Keeping URLs as simple as possible was a priority. Since a specific object may only be identified by its hash or its address, either is the only variable that is needed in a URL for specific objects. In the following frame, sample URLs and the pages they display are presented. The segment \emph{host} is a placeholder for the domain, the block explorer is hosted on.
+
+\begin{framed}
+\url{host/blocks} --- List of most recent blocks
+
+\url{host/block/<<block_hash>>} --- Details for block $\ll$blockhash$\gg$
+
+\url{host/adminpanel} --- Administrator panel
+
+\url{host/transactions/funds/<<hash>>} --- Details for Funds Transaction $\ll$hash$\gg$
+
+
+
+\end{framed}
 
 \subsection{Administrator Panel}
 Since there currently are five different types of System Configuration Transactions defined by IDs 1 through 5 \cite{bazo}, a \emph{Submit} form for every type needs to be available on the administrator panel. Depending on which administrator is currently logged in and using the panel, account information, such as the current transaction count and public key of the administrator, do not need to be entered in the transaction forms. These values get automatically included in the transactions are are derived from the public key, the administrator entered to log in. Detailed information about the verification process can be found in \ref{cookies}. The administrator enters the payload for the transaction he wishes to send and the transaction fee. The application validates the user input before sending transaction details. The panel also displays all current system parameters and updates them after each validated System Configuration Transaction. 
@@ -102,16 +115,55 @@ To interact with the Golang-Backend of the application, Gohtml templates \cite{t
 
 \subsubsection{Reusable Modules}
 \begin{itemize}
-\item \textbf{Navbar}
-\item \textbf{HTML Head}
-\item \textbf{Public Key Modal}
-\item \textbf{Private Key Modal}
-\item \textbf{Script Imports}
+\item{Navbar}
+\item{HTML Head}
+\item{Public Key Modal}
+\item{Private Key Modal}
+\item{Script Imports}
 \end{itemize}
 
-\subsection{Handling Passed Variables}
-If the backend of the application passes any variable to a template, Gohtml templates can render these variables by including ``\{\{ . \}\}'' in the template. Golang code is delimited by curly braces inside templates. The period is the placeholder, the passed variable replaces, before being rendered to HTML. When passing a struct to a template, all attributes of the struct can be accessed, by appending the attribute name to the period. In order to pass different structs to the template, such as in the landing page's case, where slices of blocks \emph{and} slices of transactions are passed, structs containing structs need to be defined, since only one object can be passed to the template.
-PSEUDOCODE SHOWCASING RANGE, END FUNCITONALITY
+\subsubsection{Handling Passed Variables}
+If the backend of the application passes any variable to a template, Gohtml templates can render these variables by including ``\{\{ . \}\}'' in the template. Golang code is delimited by curly braces inside templates. The period is the placeholder, the passed variable replaces, before being rendered to HTML. When passing a struct to a template, all attributes of the struct can be accessed, by appending the attribute name to the period. In order to pass different structs to the template, such as in the landing page's case, where slices of blocks \emph{and} slices of transactions are passed, structs containing structs need to be defined, since only one object can be passed to the template. 
+
+In listing \ref{lst:structtable}, a simplified excerpt from the landing page Gohtml file is presented. Two tables, one for block-hashes and one for Funds Transaction hashes make use of templating. A struct containing a slice of blocks and a slice of Funds Transactions, gets passed to the template. On line 9, the \emph{Blocks} slice (attribute) of the passed struct gets iterated through. For every block, a new table row gets created, containing a link to the specific block page. The period now represents the struct of a single block and its attributes can be accessed by appending the desired attribute. Similarly on line 26, the transaction slice in the struct is iteratied through. On line 28, the \emph{Hash} attribute does not access the block's hash anymore, but the Funds Transaction's, as the period now represents a transaction.
+
+%\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Block and Funds Transaction Tables Accessing a \emph{blocksandtx} Struct},captionpos=b,label={lst:structtable}]
+<table class="table">
+  <thead>
+    <tr id="header-row">
+      <th>Hash</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    {{range .Blocks}}
+    <tr>
+      <td><a href="/block/{{.Hash}}">{{.Hash}}</a></td>
+    </tr>
+    {{end}}
+    
+  </tbody>
+</table>
+
+<table class="table">
+  <thead>
+    <tr id="header-row">
+      <th>Hash</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    {{range .Txs}}
+    <tr>
+      <td><a href="/transactions/funds/{{.Hash}}">{{.Hash}}</a></td>
+    </tr>
+    {{end}}
+    
+  </tbody>
+</table>
+\end{lstlisting}
+%\end{minipage}
 
 \subsection{UI Framework} \label{sec:uiframeworks}
 In the beginning of development, a custom CSS built from scratch was created to style the application, however, due to concerns about usability and overall presentation of the website, the Bootstrap v4 UI Framework \cite{bootstrap} was chosen as a replacement and enhancement of the original styling.
@@ -133,7 +185,7 @@ However, since no Bazo Client should run in the backend of the application, the 
   \label{fig:sequence1}
 \end{figure}
 
-The process is detailed in figure \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administrator panel, which are linked to a Vue.js application \cite{vue} . In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie \cite{vcookies} (user verification is described in \ref{verification}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format \cite{json} , of which the \emph{isRoot} attribute is important to the application. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing \cite{elliptic}, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
+The process is detailed in figure \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administrator panel, which are linked to a Vue.js application \cite{vue} . In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie \cite{cookies} (user verification is described in \ref{verification}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format \cite{json} , of which the \emph{isRoot} attribute is important to the application. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing \cite{elliptic}, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
 
 
 \section{Backend}
@@ -142,21 +194,47 @@ The backend of the web app is written in Golang \cite{golang}, which is well sui
 The Golang code of the block explorer is split up into...
 GRAPHIC
 \subsection{Router}
-The router handles all requests made to the application. On startup, the router gets initialized and registers all possible routes. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}.
-Additionally to the built-in http package in Golang, HttpRouter by Julien Schmidt \cite{httprouter} has been used as well. 
+The router handles all requests made to the application. The process of initializing the router is detailed in listing \ref{lst:router}. When \emph{initializeRouter()} is called, a new router is declared and registers all possible routes to it. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}. 
+Additionally to the built-in http package in Golang, HttpRouter by Julien Schmidt \cite{httprouter} has been used. 
 
 ``In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.'' \cite{httprouter}
 
-HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be defined in a well-structured way. Except for the \emph{/login} and \emph{/search} routes, which are called using POST methods, all routes are called via GET request.
+HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be defined in a well-structured way. Variables in the routes such as hashes can be defined by prepending a colon before a segment in the URL. For example in listing \ref{lst:router} on line 6, when \emph{/blocks/:hash} is called using a GET request, where \emph{:hash} can be any string variable, the router automatically parses the hash to be used by the \emph{getOneBlock()} function that gets called after the request. Except for the \emph{/login} and \emph{/search} routes, which are called using POST methods, all routes are called via GET request.
 
+%\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Initialization of the Router},captionpos=b,label={lst:router}]
+func initializeRouter() *httprouter.Router {
+  router := httprouter.New()
+
+  router.GET("/", getIndex)
+  router.GET("/blocks", getAllBlocks)
+  router.GET("/block/:hash", getOneBlock)
+  router.GET("/transactions/funds", getAllFundsTx)
+  router.GET("/transactions/funds/:hash", getOneFundsTx)
+  router.GET("/transactions/acc", getAllAccTx)
+  router.GET("/transactions/acc/:hash", getOneAccTx)
+  router.GET("/transactions/config", getAllConfigTx)
+  router.GET("/transactions/config/:hash", getOneConfigTx)
+  router.GET("/account/:hash", getAccount)
+  router.GET("/accounts", getTopAccounts)
+  router.POST("/search/", searchForHash)
+  router.POST("/login", loginFunc)
+  router.GET("/adminpanel", adminfunc)
+
+  router.ServeFiles("/static/*filepath", http.Dir("static"))
+
+  return router
+}
+\end{lstlisting}
+%\end{minipage}
 
 \subsection{Cookies} \label{cookies}
 
-By design, only administrators of the system can successfully publish a System Configuration Transaction to the network, since only they possess a root private key that lets them sign the transactions. However, using a Bazo Client, a non-root user may still spam the network with admin-only transactions, without them ever getting accepted by the system. Therefore implementing a thorough login-system on the explorer that requests a user's private key to verify whether he has administrator rights, in order to prevent non-administrator users from trying to publish transactions to the network seemed unnecessary. This would have also meant that a private key would get send over the network to check its access rights. The chosen verification process is as follows:
-Upon requesting to log in, a user enters a public key. This public key then gets sent to the Bazo Interface \cite{marc}, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning}. 
+By design, only administrators of the system can successfully publish a System Configuration Transaction to the network, since only they possess a root private key that lets them sign the transactions. However, using a Bazo Client, a non-root user may still spam the network with admin-only transactions, without them ever getting accepted by the system. Therefore implementing a thorough login-system on the explorer that requests a user's private key to verify whether he has administrator rights, in order to prevent non-administrator users from trying to publish transactions to the network seemed unnecessary. This would have also meant that a private key would get sent over the network to check its access rights. The chosen verification process is as follows:
+Upon requesting to log in, a user enters a \emph{public} key. This public key then gets sent to the Bazo Interface \cite{marc}, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the only page requiring verification, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning} to sign transactions.
 
 \subsection{Concurrency}
-The application makes use of Golang's built-in concurrency functionality. By calling \emph{runDB()} in the main function as a Goroutine by appending the keyword \emph{go}, the mechanism that automatically updates the database with new blockchain data, runs separately from the router's request handling.
+The application makes use of Golang's built-in concurrency functionality. By calling \emph{runDB()} in the main function as a Goroutine by appending the keyword \emph{go}, the mechanism that automatically updates the database with new blockchain data, runs separately from the router's request handling. This means that the web app can still be used, while the database is being updated with new records.
 
 \subsection{Structs}
 Hashes and other generated values in the Bazo blockchain are stored using fixed-sized byte-slices. This has several drawbacks in terms of usability, since they first have to be converted into strings by representing each byte in its hexadecimal value and concatenating all hex values, when displayed to the user. Because of difficulty preserving the byte-slices while storing them in a PSQL database, and the fact that users search for string representations of these values, all blockchain data first gets converted to human-readable form before saving it in the database. Additionally for easier data-management, all entries in all transaction tables now have added \emph{BlockHash} and \emph{Timestamp} attributes, since using raw blockchain data, transactions could not be traced back to a block or a mining date.
@@ -165,6 +243,37 @@ Hashes and other generated values in the Bazo blockchain are stored using fixed-
 
 \subsection{Data Transfer}
 
+\subsubsection{Retrieving Blocks}
+
+
 \subsubsection{Procedure for Saving a Block}
+
+%\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Saving a Block and Its Transactions to the Database},captionpos=b,label={lst:save}]
+func SaveBlockAndTransactions(oneBlock *protocol.Block)  {
+
+  for _, accTxHash := range oneBlock.AccTxData{ . . . }
+
+  for _, fundsTxHash := range oneBlock.FundsTxData{
+    fundsTx := reqTx(p2p.FUNDSTX_REQ, fundsTxHash)
+    convertedTx := ConvertFundsTransaction(fundsTx.(*protocol.FundsTx), 
+    										oneBlock.Hash, 
+											fundsTxHash)
+
+    UpdateAccountData(convertedTx)
+    WriteFundsTx(convertedTx)
+  }
+
+  for _, configTxHash := range oneBlock.ConfigTxData{ . . . }
+
+  convertedBlock := ConvertBlock(oneBlock)
+  WriteBlock(convertedBlock)
+}
+\end{lstlisting}
+%\end{minipage}
+
+Every block retrieved from the miner goes through the algorithm presented in listing \ref{lst:save}. Since every block contains a slice of transaction hashes for every transaction type, loops that iterate through the slices exist for every transaction type (lines 3, 5 and 15). Account Creation Transactions and Configuration Transactions have been collapsed in the example, to highlight how Funds Transactions are saved in the database, as all processes are similar and only differ in what information is saved and updated in their respective tables.
+
+Starting on line 5, a request using the Funds Transaction's hash, to retrieve the full transaction data is made to the network. The returned transaction of type \emph{protocol.FundsTx} is then converted to a struct that is usable to the database. For the conversion, the block's hash and the transaction hash, extracted from the slice, are needed as well. \emph{UpdateAccountData(convertedTx)} then updates \emph{Balance} and \emph{TxCount} attributes for all accounts featured in that transaction in the database's \emph{Accounts} table. The last step concerning the transaction is \emph{WriteFundsTx(convertedTx)}, which saves the transaction in the \emph{FundsTx} table in the database. After all slices have finished processing, the block itself is converted to a database-friendly format and saved in the \emph{Blocks} table.
 
 \section{Hosting}
