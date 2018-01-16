@@ -61,8 +61,6 @@ A web application was chosen, because of its accessibility and its convenience. 
 \item{Administrator Panel}
 \end{itemize}
 
-From a list-view of a data-type, each individual item can be accessed. The goal is to first, provide the user with a list view of a data-type, such as blocks. Once he finds an object of interest, he clicks on the hash of the block, which is its unique identifier, and gets presented with detailed information about that object. Depending on the data-type, the user is viewing, links to related elements enable further browsing of the data. For example, on a detailed block page, a link to the detailed account page of the account that received the block reward of said block, is listed. Since all different types of blockchain data have their own data structures, custom tables for all listed pages, that contain data need to be built. In figure \ref{fig:mockup1}, a mockup of the table containing the most recent blocks is displayed. The block's hash, the timestamp when it was mined and the counters for each transaction type are listed. Each single block hash links to the detailed page of that block. On the detailed block page, all transaction hashes that are included in a block, are ordered by type and displayed in a list. Similarly on a detailed account's page, all transactions related to that account are displayed as well.
-
 \begin{figure}
   \includegraphics[width=\linewidth]{mockup1.png}
   \centering
@@ -70,8 +68,9 @@ From a list-view of a data-type, each individual item can be accessed. The goal 
   \label{fig:mockup1}
 \end{figure}
 
-\subsection{Navbar and Search}
+From a list-view of a data-type, each individual item can be accessed. The goal is to first, provide the user with a list view of a data-type, such as blocks. Once he finds an object of interest, he clicks on the hash of the block, which is its unique identifier, and gets presented with detailed information about that object. Depending on the data-type, the user is viewing, links to related elements enable further browsing of the data. For example, on a detailed block page, a link to the detailed account page of the account that received the block reward of said block, is listed. Since all different types of blockchain data have their own data structures, custom tables for all listed pages, that contain data need to be built. In figure \ref{fig:mockup1}, a mockup of the table containing the most recent blocks is displayed. The block's hash, the timestamp when it was mined and the counters for each transaction type are listed. Each single block hash links to the detailed page of that block. On the detailed block page, all transaction hashes that are included in a block, are ordered by type and displayed in a list. Similarly on a detailed account's page, all transactions related to that account are displayed as well.
 
+\subsection{Navbar and Search}
 The navbar is featured on every page of the application. Figure \ref{fig:navbar} displays all possible pages that are accessible from the navbar and the their respective detailed pages. Since there are multiple types of transactions, a dropdown menu on the \emph{Transactions} button, displays links to list-views of all types of transactions. The administrator panel is also accessed from here. Included in the navbar, is the search function. A user can enter a hash and the backend of the application searches for that hash in the database. A successful search will automatically present the data to the user in the right formatting, meaning the system displays the page according to the data type of the search result. It is possible to search for blocks, all transaction types, account hashes and account addresses, since Bazo uses both hashes and addresses to identify an account.
 
 \begin{figure}
@@ -93,27 +92,24 @@ Keeping URLs as simple as possible was a priority. Since a specific object may o
 
 \url{host/transactions/funds/<<hash>>} --- Details for Funds Transaction $\ll$hash$\gg$
 
-
-
+\url{host/transactions/acc} --- List of most recent Account Creation Transactions
 \end{framed}
 
 \subsection{Administrator Panel}
 Since there currently are five different types of System Configuration Transactions defined by IDs 1 through 5 \cite{bazo}, a \emph{Submit} form for every type needs to be available on the administrator panel. Depending on which administrator is currently logged in and using the panel, account information, such as the current transaction count and public key of the administrator, do not need to be entered in the transaction forms. These values get automatically included in the transactions are are derived from the public key, the administrator entered to log in. Detailed information about the verification process can be found in \ref{cookies}. The administrator enters the payload for the transaction he wishes to send and the transaction fee. The application validates the user input before sending transaction details. The panel also displays all current system parameters and updates them after each validated System Configuration Transaction. 
 
 \subsection{Statistical Information}
-On this section of the application, users can view data about the overall health and productivity of the Bazo blockchain. A chart featuring a 14-Day transaction history visualizes how frequently the Bazo system is used, as well as shows, whether usage increases over time of operation. Information regarding total Bazo Coin supply and the total number of Bazo accounts is also provided, since viewing accounts and their balances by all users, is possible anyway. The statistical information is updated in a regular interval, to match the recent blockchain data.
+On this section of the application, users can view data about the overall health and productivity of the Bazo blockchain. A chart featuring a 12-Hour transaction history visualizes how frequently the Bazo system is used, as well as shows, whether usage increases over time of operation. Information regarding total Bazo Coin supply and the total number of Bazo accounts is also provided, since viewing accounts and their balances by all users, is possible anyway. The statistical information is updated in a regular interval, to match the recent blockchain data.
 
 \section{Database}
-A relational database was chosen for the explorer, because the data that gets saved always has the same format. Efficiently sorting data by an attribute, is an ability that is needed in order to provide a responsive user experience. Ideally the database is hosted on the same server, as the block explorer is, to ensure optimal read and write times. Functions to read and write single items to the database need to be available, as well as functions that return multiple rows of data. In the case of presenting statistical information to the user, this information needs to be calculated with the data from the database.
+A relational database was chosen for the explorer, because the data that gets saved always has the same format. Efficiently sorting data by an attribute, is an ability that is needed in order to provide a responsive user experience. Ideally the database is hosted on the same server, as the block explorer is, to ensure optimal read and write times. Functions to read and write single items to the database need to be available, as well as functions that return multiple rows of data. In the case of presenting statistical information to the user, this information needs to be calculated with the data from the database. For every object type, such as blocks and all transactions, as well as the statistical information, separate tables need to exist. 
 
 \chapter{Implementation}
-This chapter documents the implementation of the components listed in chapter \ref{chap:design} and how they interact with each other. An additional section concerning hosting of the application on the internet is also included. GO INTRODUCTION AND LIBRARIES
-\section{Frontend}
-The frontend of the application is the interface, the user interacts with. 
-\subsection{HTML Templates}
-To interact with the Golang-Backend of the application, Gohtml templates \cite{template} have been used to define the markup of the pages. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser \cite{httppackage}. Except for some Bootstrap \cite{bootstrap} functionality mentioned in \ref{sec:uiframeworks} and one case discussed in section \ref{sec:clientside}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
+This chapter documents the implementation of the components listed in chapter \ref{chap:design} and how they interact with each other. An additional section concerning hosting of the application on the internet is also included. The majority of the application was programmed in Go (Golang to avoid confusion). Go is a language that started development in 2007, as an answer to the changing computer landscape, as no new major systems language has emerged over a long time. \cite{gohistory}. The aim of Go is to support new computing concepts such as multicore computing and make development overall a less time consuming task.
+\section{HTML Templates}
+To interact with the Golang-Backend of the application, Gohtml templates \cite{template} have been used to define the markup of the pages. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser \cite{httppackage}. Except for the rendering of the chart on the statistical information page mentioned in \ref{chart} and one special case discussed in section \ref{vuejs}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
 
-\subsubsection{Reusable Modules}
+\subsection{Reusable Modules}
 \begin{itemize}
 \item{Navbar}
 \item{HTML Head}
@@ -122,10 +118,12 @@ To interact with the Golang-Backend of the application, Gohtml templates \cite{t
 \item{Script Imports}
 \end{itemize}
 
-\subsubsection{Handling Passed Variables}
+\subsection{Handling Passed Variables}
 If the backend of the application passes any variable to a template, Gohtml templates can render these variables by including ``\{\{ . \}\}'' in the template. Golang code is delimited by curly braces inside templates. The period is the placeholder, the passed variable replaces, before being rendered to HTML. When passing a struct to a template, all attributes of the struct can be accessed, by appending the attribute name to the period. In order to pass different structs to the template, such as in the landing page's case, where slices of blocks \emph{and} slices of transactions are passed, structs containing structs need to be defined, since only one object can be passed to the template. 
 
-In listing \ref{lst:structtable}, a simplified excerpt from the landing page Gohtml file is presented. Two tables, one for block-hashes and one for Funds Transaction hashes make use of templating. A struct containing a slice of blocks and a slice of Funds Transactions, gets passed to the template. On line 9, the \emph{Blocks} slice (attribute) of the passed struct gets iterated through. For every block, a new table row gets created, containing a link to the specific block page. The period now represents the struct of a single block and its attributes can be accessed by appending the desired attribute. Similarly on line 26, the transaction slice in the struct is iteratied through. On line 28, the \emph{Hash} attribute does not access the block's hash anymore, but the Funds Transaction's, as the period now represents a transaction.
+In listing \ref{lst:structtable}, a simplified excerpt from the landing page Gohtml file is presented. Two tables, one for block-hashes and one for Funds Transaction hashes make use of templating. A struct containing a slice of blocks and a slice of Funds Transactions, gets passed to the template. On line 9, the \emph{Blocks} slice (attribute) of the passed struct gets iterated through using the \emph{range} and \emph{end} keywords. For every block, a new table row gets created, containing a link to the specific block page. The period now represents the struct of a single block and its attributes can be accessed by appending the desired attribute. Similarly on line 26, the transaction slice in the struct is iteratied through. On line 28, the \emph{Hash} attribute does not access the block's hash anymore, but the Funds Transaction's, as the period now represents a transaction.
+
+\newpage
 
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Block and Funds Transaction Tables Accessing a \emph{blocksandtx} Struct},captionpos=b,label={lst:structtable}]
@@ -165,16 +163,17 @@ In listing \ref{lst:structtable}, a simplified excerpt from the landing page Goh
 \end{lstlisting}
 %\end{minipage}
 
-\subsection{UI Framework} \label{sec:uiframeworks}
+\section{UI Framework} \label{sec:uiframeworks}
 In the beginning of development, a custom CSS built from scratch was created to style the application, however, due to concerns about usability and overall presentation of the website, the Bootstrap v4 UI Framework \cite{bootstrap} was chosen as a replacement and enhancement of the original styling.
 ``Originally created by a designer and a developer at Twitter, Bootstrap has become one of the most popular front-end frameworks and open source projects in the world.'' \cite{bootstraphistory}
-It offers a wide variety of content and components to quickly build a responsive user interface. Most components are defined in the Bootstrap CSS, however for some client-side funcitonality, JavaScript can be enabled. Block explorer pages are heavily dependent on Bootstrap, since all UI components use Bootstrap classes. In cases where further styling was needed, a separate CSS overwrites Bootstrap stylings, for example the width of the Search Bar had to be manually widened. In some tables, inline styling in their HTML was used, when certain columns needed to have fixed widths.
+It offers a wide variety of content and components to quickly build a responsive user interface. Most components are defined in the Bootstrap CSS, however for some client-side functionality, JavaScript can be enabled. Block explorer pages are heavily dependent on Bootstrap, since all UI components use Bootstrap classes. In cases where further styling was needed, a separate CSS overwrites Bootstrap stylings, for example the width of the Search Bar had to be manually widened. In some tables, inline styling in their HTML was used, when certain columns needed to have fixed widths.
 
-\subsection{Client-Side Logic} \label{sec:clientside}
+\section{Client-Side Logic} \label{sec:clientside}
 
-\subsubsection{Vue.js \cite{vue} and Libraries}
+\subsection{Vue.js and Libraries} \label{vuejs}
+For the process described in \ref{txsigning}, the Vue.js JavaScript framework \cite{vue} has been used. Vue.js allows for easy client-side scripting with minimal setup. It links a vue app which is contained in a JavaScript file to an \emph{id}-tag on a HTML file and has access to all objects such as input fields and buttons under the \emph{div}-tag that contains the linked  \emph{id}-tag. To run a vue app, vue and all the additional libraries have to be imported on the HTML file. Additionally to the standard vue import, Axios , a promise based HTTP client \cite{axios} has been used to make GET requests from the frontend of the application and . To extract cookies for verification purposes, vue-cookies \cite{vcookies} was used. 
 
-\subsubsection{Transaction Signing} \label{txsigning}
+\subsection{Transaction Signing} \label{txsigning}
 A requirement of the Bazo Blockchain Explorer is to be able to send System Configuration Transactions from the browser. 
 However, since no Bazo Client should run in the backend of the application, the ability to build and sign transactions is not provided. A Bazo Client takes transaction details and the private key of the sender in order to build a transaction. Extracting only the transaction signing functionality of the Bazo Client and implementing it into the backend of the explorer would violate security constraints, since the private key would have to be sent over the network to the server. The private key should always stay with the user and never leave his device. This is where the Bazo Interface \cite{marc} comes in place, a REST API that builds an unfinished transaction hash using the transaction details without the issuer's private key. In a second step the user enters his private key in order to sign the transaction client-side and then send it back to the Interface, which then publishes it to the network.
 
@@ -185,22 +184,34 @@ However, since no Bazo Client should run in the backend of the application, the 
   \label{fig:sequence1}
 \end{figure}
 
-The process is detailed in figure \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administrator panel, which are linked to a Vue.js application \cite{vue} . In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code extracts the public key stored in a cookie \cite{cookies} (user verification is described in \ref{verification}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format \cite{json} , of which the \emph{isRoot} attribute is important to the application. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing \cite{elliptic}, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
+The process is detailed in figure \ref{fig:sequence1}. A user enters the values that make up the transaction into HTML-input fields on the administrator panel, which are linked to a Vue.js application \cite{vue} . In this case, that would be the type of Configuration Transaction (id), the payload (new value) and the fransaction fee.When the user hits \emph{Send}, JavaScript code in the Vue.js app extracts the public key stored in a cookie \cite{vcookies} (user verification is described in \ref{cookies}) and requests the account data concerning that user. The REST interface responds with the account information in JSON format \cite{json} , of which the \emph{isRoot} attribute is important to the application. If the public key, stored in the cookie belongs to a root account, the JavaScript code builds a URL that contains all transaction data, previously entered by the user. Another request to the interface, using that URL is made, which then builds a transaction hash using the transaction data. If that hash was returned successfully, a modal opens up on the block explorer, prompting the user to enter a root private key. Using a JavaScript implementation of elliptic signing \cite{elliptic}, the transaction hash gets signed with the entered private key, which results in a new, signed transaction hash and sent to the interface, along with the unsigned hash for identification purposes.
 
+\subsection{AnyChart} \label{chart}
+To render the chart that displays the 12-hour transaction history of the network, the AnyChart JavaScript charting library \cite{anychart} was used. It allows the creation of over 70 different charts and the only thing it requires the backend to do, is format the data in the correct way. On the HTML-template, script imports can be used to make use of the library, which makes the use of a packet manager unnecessary. In addition to imports, it requires a JavaScript function, that defines the type, layout and the location of the diagram on the final page. The location is defined by an HTML \emph{id} tag. In the Bazo Block Explorer's case, a spline chart was chosen to display the data in a line.
+The backend requests all blocks that were mined in the last 12 hours, calculates the total number of transactions for each hour and saves that information in a struct. That struct gets converted into JSON format and then converted to a string. This string then gets passed to the template and used by the AnyChart function, which converts the string back to JSON format and uses it to build the chart.
 
-\section{Backend}
-The backend of the web app is written in Golang \cite{golang}, which is well suited for writing web applications, due to its included http \cite{httppackage}and HTML \cite{template} packages. Since the Bazo Blockchain was also written in Golang \cite{bazo}, compability between the two programs was ensured. The program is split up into distinct files, to separate functionality. GO??
-\subsection{Packages of the Block Explorer}
-The Golang code of the block explorer is split up into...
-GRAPHIC
-\subsection{Router}
+\section{Packages of the Block Explorer}
+The backend of the web app is written in Golang \cite{golang}, which is well suited for writing web applications, due to its included net/http \cite{httppackage} and html/template \cite{template} packages. Since the Bazo Blockchain was also written in Golang \cite{bazo}, compability between the two programs was ensured and certain packages of Bazo were used in the Bazo Block Explorer. The program is split up into distinct modules, to separate functionality. 
+
+\begin{itemize}
+\item \textbf{Router}\\
+The Router functionality is described in \ref{router}. It handles all requests made to the application.
+\item \textbf{Data}\\
+This module handles all data processing of the application, specifically the retrieval of data from the blockchain and the saving of that data in the block explorer's own database. It is described in \ref{data} and \ref{sql}.
+\item \textbf{Utilities}\\
+The Utilities module contains functionality that is used by both Router and Data modules such as the definition of structs and smaller helper functions.
+\item \textbf{Source}\\
+All Gohtml templates, JavaScript files and CSS files are bundled in this module. Gohtml templates get passed to the router, which then get converted to HTML, whereas the other files get served to the website to be used client-side.
+\end{itemize}
+
+\section{Router} \label{router}
 The router handles all requests made to the application. The process of initializing the router is detailed in listing \ref{lst:router}. When \emph{initializeRouter()} is called, a new router is declared and registers all possible routes to it. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}. 
 Additionally to the built-in http package in Golang, HttpRouter by Julien Schmidt \cite{httprouter} has been used. 
 
 ``In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.'' \cite{httprouter}
 
 HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be defined in a well-structured way. Variables in the routes such as hashes can be defined by prepending a colon before a segment in the URL. For example in listing \ref{lst:router} on line 6, when \emph{/blocks/:hash} is called using a GET request, where \emph{:hash} can be any string variable, the router automatically parses the hash to be used by the \emph{getOneBlock()} function that gets called after the request. Except for the \emph{/login} and \emph{/search} routes, which are called using POST methods, all routes are called via GET request.
-
+\\
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Initialization of the Router},captionpos=b,label={lst:router}]
 func initializeRouter() *httprouter.Router {
@@ -217,6 +228,7 @@ func initializeRouter() *httprouter.Router {
   router.GET("/transactions/config/:hash", getOneConfigTx)
   router.GET("/account/:hash", getAccount)
   router.GET("/accounts", getTopAccounts)
+  router.GET("/stats", getStats)
   router.POST("/search/", searchForHash)
   router.POST("/login", loginFunc)
   router.GET("/adminpanel", adminfunc)
@@ -228,25 +240,24 @@ func initializeRouter() *httprouter.Router {
 \end{lstlisting}
 %\end{minipage}
 
-\subsection{Cookies} \label{cookies}
+\section{Cookies} \label{cookies}
 
 By design, only administrators of the system can successfully publish a System Configuration Transaction to the network, since only they possess a root private key that lets them sign the transactions. However, using a Bazo Client, a non-root user may still spam the network with admin-only transactions, without them ever getting accepted by the system. Therefore implementing a thorough login-system on the explorer that requests a user's private key to verify whether he has administrator rights, in order to prevent non-administrator users from trying to publish transactions to the network seemed unnecessary. This would have also meant that a private key would get sent over the network to check its access rights. The chosen verification process is as follows:
 Upon requesting to log in, a user enters a \emph{public} key. This public key then gets sent to the Bazo Interface \cite{marc}, where more information regarding that key is requested. One attribute of the response the interface returns, is \emph{isRoot}. If \emph{isRoot} returns true, a cookie containing the entered public key gets saved to the user's machine and the user is verified. When the user then requests the administrator panel, the only page requiring verification, the public key in the cookie gets checked again and sent to the interface. If the returned \emph{isRoot} is still true, he gets access to the administrator panel. The public key contained in the cookie then gets extracted by client-side code described in \ref{txsigning} to sign transactions.
 
-\subsection{Concurrency}
+\section{Concurrency} \label{goroutines}
 The application makes use of Golang's built-in concurrency functionality. By calling \emph{runDB()} in the main function as a Goroutine by appending the keyword \emph{go}, the mechanism that automatically updates the database with new blockchain data, runs separately from the router's request handling. This means that the web app can still be used, while the database is being updated with new records.
 
-\subsection{Structs}
+\section{Structs}
 Hashes and other generated values in the Bazo blockchain are stored using fixed-sized byte-slices. This has several drawbacks in terms of usability, since they first have to be converted into strings by representing each byte in its hexadecimal value and concatenating all hex values, when displayed to the user. Because of difficulty preserving the byte-slices while storing them in a PSQL database, and the fact that users search for string representations of these values, all blockchain data first gets converted to human-readable form before saving it in the database. Additionally for easier data-management, all entries in all transaction tables now have added \emph{BlockHash} and \emph{Timestamp} attributes, since using raw blockchain data, transactions could not be traced back to a block or a mining date.
 
-\subsubsection{Conversions}
+\section{Data Transfer} \label{data}
 
-\subsection{Data Transfer}
+\subsection{Retrieving Blocks} \label{retrieve}
+When \emph{runDB()} is called as a Goroutine, as mentioned in \ref{goroutines}, all existing blocks are requested and saved to the database. To request a block and its data, the blocks's hash needs to be known. Integrated into the miner is the functionality that, if a block is requested but \emph{nil} is passed to the function, the most recent block in the miner's storage component (known as \emph{newestBlock}) is returned and subsequently saved to the explorer's database. Starting with this  \emph{newestBlock}'s \emph{previousHash} attribute, the remaining blocks get requested and saved recursively until the genesis block is reached. Once all existing blocks have been saved, the system regularly checks whether there have been any new blocks mined and retrieves them in a similar fashion.
+The way a block is requested is similar to how Bazo Miners communicate with each other \cite{bazo}. The application imports the miner's p2p package and utilizes its messaging system to connect to the bootstrap server and make requests to the network.
 
-\subsubsection{Retrieving Blocks}
-
-
-\subsubsection{Procedure for Saving a Block}
+\subsection{Procedure for Saving a Block} \
 
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Saving a Block and Its Transactions to the Database},captionpos=b,label={lst:save}]
@@ -272,8 +283,31 @@ func SaveBlockAndTransactions(oneBlock *protocol.Block)  {
 \end{lstlisting}
 %\end{minipage}
 
-Every block retrieved from the miner goes through the algorithm presented in listing \ref{lst:save}. Since every block contains a slice of transaction hashes for every transaction type, loops that iterate through the slices exist for every transaction type (lines 3, 5 and 15). Account Creation Transactions and Configuration Transactions have been collapsed in the example, to highlight how Funds Transactions are saved in the database, as all processes are similar and only differ in what information is saved and updated in their respective tables.
+Every block retrieved from the miner goes through the algorithm presented in listing \ref{lst:save}. Since every block contains a slice of transaction hashes for every transaction type, loops that iterate through the slices exist for every transaction type (lines 3, 5 and 15). Account Creation Transactions and Configuration Transactions have been minimized in the example, to highlight how Funds Transactions are saved in the database. All processes are similar and only differ in what information is saved and updated in their respective tables.
 
 Starting on line 5, a request using the Funds Transaction's hash, to retrieve the full transaction data is made to the network. The returned transaction of type \emph{protocol.FundsTx} is then converted to a struct that is usable to the database. For the conversion, the block's hash and the transaction hash, extracted from the slice, are needed as well. \emph{UpdateAccountData(convertedTx)} then updates \emph{Balance} and \emph{TxCount} attributes for all accounts featured in that transaction in the database's \emph{Accounts} table. The last step concerning the transaction is \emph{WriteFundsTx(convertedTx)}, which saves the transaction in the \emph{FundsTx} table in the database. After all slices have finished processing, the block itself is converted to a database-friendly format and saved in the \emph{Blocks} table.
 
+\section{SQL-Queries} \label{sql}
+On startup, the first database queries made, are called from the \emph{DBSetup()} function. First, all existing tables and data get dropped from the database. Then, all tables get created again to start the application with a clean database. Once the explorer begins requesting and saving blocks from the network, \emph{INSERT} queries begin writing all data in their respective tables, block by block. \emph{SELECT} statements are used when requesting one or more rows of data from a table. Using Golang's \emph{database/sql} package, placeholder values, such as \$1, \$2, etc an be used to automate construction of the SQL-Statement string. The actual variables can be passed as additional arguments to the function that is used to query the request, as seen in Listing \ref{lst:acctx}: \emph{UrlHash} represents the hash, the user has requested. Together with the statement string, it gets passed to \emph{db.QueryRow} and saved to \emph{row}. The next step is mapping all values of  \emph{row} to a struct that matches all columns of the query result using the \emph{Scan()} function of the \emph{row} object. Additionally to write and read functions for blocks, transactions and accounts, functions that update and return the statistical information also exist.
+\\
+\begin{lstlisting}[caption={Requesting a Specific Account Creation Transaction},captionpos=b,label={lst:acctx}]
+sqlStatement := `SELECT hash, blockhash, issuer, fee, pubkey, signature 
+				 FROM acctx 
+				 WHERE hash = $1;`
+row := db.QueryRow(sqlStatement, UrlHash)
+var returnedrow acctx
+row.Scan(&returnedrow.Hash, &returnedrow.BlockHash, &returnedrow.Issuer,
+		 &returnedrow.Fee, &returnedrow.PubKey, &returnedrow.Signature)
+\end{lstlisting}
+
+\subsection{Search Function}
+When a user enters a hash he wants more information on, it gets passed to the backend and processed by the \emph{searchForHash} function, which makes a request with the entered hash on each table, until a table returns a result. If no data regarding that hash could be found, the user is notified.
+
 \section{Hosting}
+In a test-run, the Bazo Block Explorer was hosted as a Heroku app on their cloud hosting platform \cite{heroku}. The PSQL database was also ported to run on Heroku. Since during development, both the explorer and the database were hosted locally, changes to how the application retrieves the target port and database connection string needed to be made. On Heroku, the application and the database were connected by adding the database as an add-on to the Heroku App. This means that the correct port and database location can be extracted using Golang's \emph{os} package \cite{os}. These values can also be edited manually using Heroku's dashboard.
+
+Required for the Golang application to compile and run on Heroku, is the \emph{heroku/go} buildpack \cite{buildpack}, which is used to install dependencies and configure the environment. Additionally the application needs a procfile, which specifies how Heroku will name and treat the application \cite{procfile}. In the block explorer's case it was defined as a \emph{web} app.
+\begin{framed}
+web: BlockExplorerHeroku
+\end{framed}
+Godep needs to be used to manage dependencies of the app \cite{godep}. Godep saves all dependencies in JSON \cite{json} format, which are then interpreted by the \emph{heroku/go} buildpack \cite{buildpack}. When the application is pushed to heroku, it gets build using all dependencies and is useable immediately.
