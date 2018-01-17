@@ -106,6 +106,27 @@ A relational database was chosen for the explorer, because the data that gets sa
 
 \chapter{Implementation}
 This chapter documents the implementation of the components listed in chapter \ref{chap:design} and how they interact with each other. An additional section concerning hosting of the application on the internet is also included. The majority of the application was programmed in Go (Golang to avoid confusion). Go is a language that started development in 2007, as an answer to the changing computer landscape, as no new major systems language has emerged over a long time. \cite{gohistory}. The aim of Go is to support new computing concepts such as multicore computing and make development overall a less time consuming task.
+\section{Packages of the Block Explorer}
+The backend of the web app is written in Golang \cite{golang}, which is well suited for writing web applications, due to its included net/http \cite{httppackage} and html/template \cite{template} packages. Since the Bazo Blockchain was also written in Golang \cite{bazo}, compability between the two programs was ensured and certain packages of Bazo were used in the Bazo Block Explorer. The program is split up into distinct modules, to separate functionality. Dependencies are presented in Figure \ref{fig:packages} 
+
+\begin{itemize}
+\item \textbf{Router}\\
+The Router functionality is described in \ref{router}. It handles all requests made to the application, from the browser.
+\item \textbf{Data}\\
+This module handles all data processing of the application, specifically the retrieval of data from the blockchain and the saving of that data in the block explorer's own database. It is described in \ref{data} and \ref{sql}.
+\item \textbf{Utilities}\\
+The Utilities module contains functionality that is used by both Router and Data modules such as the definition of structs and smaller helper functions.
+\item \textbf{Source}\\
+All Gohtml templates, JavaScript files and CSS files are contained in this module. Gohtml templates get passed to the router, which then get converted to HTML, whereas the other files get served to the website to be used client-side.
+\end{itemize}
+
+\begin{figure}
+  \includegraphics[scale=0.35]{packages.png}
+  \centering
+  \caption{Package-Diagram of the Blockchain Explorer}
+  \label{fig:packages}
+\end{figure}
+
 \section{HTML Templates}
 To interact with the Golang-Backend of the application, Gohtml templates \cite{template} have been used to define the markup of the pages. One one hand, this makes way for a modular view component by letting programmers define reusable HTML modules such as headers, footers or table-templates. Using templates can minimize code duplication, which in turn makes maintenance on the code an overall less risky task. On the other hand, Golang templates allow for some limited logic in the Gohtml files, which is needed for handling variables that get passed from the backend component. For example, if the passed variable is an array of integers and the goal is to display all variables in a list, golang can create a new <li> tag for every value in the array. The HTML code that gets passed to the end user after making a request contains no Golang code, since the backend renders the Gohtml template files and passed variables to a useable HTML file that can be displayed by a web browser \cite{httppackage}. Except for the rendering of the chart on the statistical information page mentioned in \ref{chart} and one special case discussed in section \ref{vuejs}, all rendered pages of the application are static HTML files, because for every action a user may make on the website, a request has to be made to the backend. The website aims to always display the most recent data, so storing information that may not be up to date on the client's machine in order to save bandwidth, is outweighed by the possibility of having more recent data. 
 
@@ -121,10 +142,7 @@ To interact with the Golang-Backend of the application, Gohtml templates \cite{t
 \subsection{Handling Passed Variables}
 If the backend of the application passes any variable to a template, Gohtml templates can render these variables by including ``\{\{ . \}\}'' in the template. Golang code is delimited by curly braces inside templates. The period is the placeholder, the passed variable replaces, before being rendered to HTML. When passing a struct to a template, all attributes of the struct can be accessed, by appending the attribute name to the period. In order to pass different structs to the template, such as in the landing page's case, where slices of blocks \emph{and} slices of transactions are passed, structs containing structs need to be defined, since only one object can be passed to the template. 
 
-In listing \ref{lst:structtable}, a simplified excerpt from the landing page Gohtml file is presented. Two tables, one for block-hashes and one for Funds Transaction hashes make use of templating. A struct containing a slice of blocks and a slice of Funds Transactions, gets passed to the template. On line 9, the \emph{Blocks} slice (attribute) of the passed struct gets iterated through using the \emph{range} and \emph{end} keywords. For every block, a new table row gets created, containing a link to the specific block page. The period now represents the struct of a single block and its attributes can be accessed by appending the desired attribute. Similarly on line 26, the transaction slice in the struct is iteratied through. On line 28, the \emph{Hash} attribute does not access the block's hash anymore, but the Funds Transaction's, as the period now represents a transaction.
-
-\newpage
-
+In listing \ref{lst:structtable}, a simplified excerpt from the landing page Gohtml file is presented. Two tables, one for block-hashes and one for Funds Transaction hashes make use of templating. A struct containing a slice of blocks and a slice of Funds Transactions, gets passed to the template. On line 8, the \emph{Blocks} slice (attribute) of the passed struct gets iterated through using the \emph{range} and \emph{end} keywords. For every block, a new table row gets created, containing a link to the specific block page. The period now represents the struct of a single block and its attributes can be accessed by appending the desired attribute. Similarly on line 26, the transaction slice in the struct is iteratied through. On line 25, the \emph{Hash} attribute does not access the block's hash anymore, but the Funds Transaction's, as the period now represents a transaction.
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Block and Funds Transaction Tables Accessing a \emph{blocksandtx} Struct},captionpos=b,label={lst:structtable}]
 <table class="table">
@@ -134,13 +152,11 @@ In listing \ref{lst:structtable}, a simplified excerpt from the landing page Goh
     </tr>
   </thead>
   <tbody>
-  
     {{range .Blocks}}
     <tr>
       <td><a href="/block/{{.Hash}}">{{.Hash}}</a></td>
     </tr>
     {{end}}
-    
   </tbody>
 </table>
 
@@ -151,13 +167,11 @@ In listing \ref{lst:structtable}, a simplified excerpt from the landing page Goh
     </tr>
   </thead>
   <tbody>
-  
     {{range .Txs}}
     <tr>
       <td><a href="/transactions/funds/{{.Hash}}">{{.Hash}}</a></td>
     </tr>
     {{end}}
-    
   </tbody>
 </table>
 \end{lstlisting}
@@ -190,31 +204,17 @@ The process is detailed in figure \ref{fig:sequence1}. A user enters the values 
 To render the chart that displays the 12-hour transaction history of the network, the AnyChart JavaScript charting library \cite{anychart} was used. It allows the creation of over 70 different charts and the only thing it requires the backend to do, is format the data in the correct way. On the HTML-template, script imports can be used to make use of the library, which makes the use of a packet manager unnecessary. In addition to imports, it requires a JavaScript function, that defines the type, layout and the location of the diagram on the final page. The location is defined by an HTML \emph{id} tag. In the Bazo Block Explorer's case, a spline chart was chosen to display the data in a line.
 The backend requests all blocks that were mined in the last 12 hours, calculates the total number of transactions for each hour and saves that information in a struct. That struct gets converted into JSON format and then converted to a string. This string then gets passed to the template and used by the AnyChart function, which converts the string back to JSON format and uses it to build the chart.
 
-\section{Packages of the Block Explorer}
-The backend of the web app is written in Golang \cite{golang}, which is well suited for writing web applications, due to its included net/http \cite{httppackage} and html/template \cite{template} packages. Since the Bazo Blockchain was also written in Golang \cite{bazo}, compability between the two programs was ensured and certain packages of Bazo were used in the Bazo Block Explorer. The program is split up into distinct modules, to separate functionality. 
-
-\begin{itemize}
-\item \textbf{Router}\\
-The Router functionality is described in \ref{router}. It handles all requests made to the application.
-\item \textbf{Data}\\
-This module handles all data processing of the application, specifically the retrieval of data from the blockchain and the saving of that data in the block explorer's own database. It is described in \ref{data} and \ref{sql}.
-\item \textbf{Utilities}\\
-The Utilities module contains functionality that is used by both Router and Data modules such as the definition of structs and smaller helper functions.
-\item \textbf{Source}\\
-All Gohtml templates, JavaScript files and CSS files are bundled in this module. Gohtml templates get passed to the router, which then get converted to HTML, whereas the other files get served to the website to be used client-side.
-\end{itemize}
-
 \section{Router} \label{router}
-The router handles all requests made to the application. The process of initializing the router is detailed in listing \ref{lst:router}. When \emph{initializeRouter()} is called, a new router is declared and registers all possible routes to it. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}. 
+The router handles all requests made to the application. The process of initializing the router is detailed in listing \ref{lst:router}. When \emph{InitializeRouter()} is called, a new router is declared and registers all possible routes to it. Furthermore, all Gohtml templates and JavaScript files are passed to the router, so they can be rendered and used upon request \cite{httppackage}. 
 Additionally to the built-in http package in Golang, HttpRouter by Julien Schmidt \cite{httprouter} has been used. 
-
 ``In contrast to the default mux of Go's net/http package, this router supports variables in the routing pattern and matches against the request method. It also scales better.'' \cite{httprouter}
-
 HttpRouter makes building a routing table convenient. All routes and the functions they invoke, once called, can be defined in a well-structured way. Variables in the routes such as hashes can be defined by prepending a colon before a segment in the URL. For example in listing \ref{lst:router} on line 6, when \emph{/blocks/:hash} is called using a GET request, where \emph{:hash} can be any string variable, the router automatically parses the hash to be used by the \emph{getOneBlock()} function that gets called after the request. Except for the \emph{/login} and \emph{/search} routes, which are called using POST methods, all routes are called via GET request.
 \\
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Initialization of the Router},captionpos=b,label={lst:router}]
-func initializeRouter() *httprouter.Router {
+func InitializeRouter() *httprouter.Router {
+  tpl = template.Must(template.ParseGlob("source/html/*"))
+
   router := httprouter.New()
 
   router.GET("/", getIndex)
@@ -231,9 +231,10 @@ func initializeRouter() *httprouter.Router {
   router.GET("/stats", getStats)
   router.POST("/search/", searchForHash)
   router.POST("/login", loginFunc)
+  router.GET("/logout", logoutFunc)
   router.GET("/adminpanel", adminfunc)
 
-  router.ServeFiles("/static/*filepath", http.Dir("static"))
+  router.ServeFiles("/source/*filepath", http.Dir("source"))
 
   return router
 }
@@ -310,4 +311,4 @@ Required for the Golang application to compile and run on Heroku, is the \emph{h
 \begin{framed}
 web: BlockExplorerHeroku
 \end{framed}
-Godep needs to be used to manage dependencies of the app \cite{godep}. Godep saves all dependencies in JSON \cite{json} format, which are then interpreted by the \emph{heroku/go} buildpack \cite{buildpack}. When the application is pushed to heroku, it gets build using all dependencies and is useable immediately.
+Godep needs to be used to manage dependencies of the app \cite{godep}. Godep saves all dependencies in JSON \cite{json} format, which are then interpreted by the \emph{heroku/go} buildpack \cite{buildpack}. When the application is pushed to heroku, it gets built using all dependencies and is useable immediately.

@@ -1,0 +1,20 @@
+\select@language {english}
+\select@language {german}
+\select@language {german}
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Landing Page of blockexplorer.com \cite {blockexplorer}}}{6}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Landing Page of etherscan.io \cite {etherscan}}}{7}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Use Cases of the Block Explorer}}{12}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of the Blockexplorer and Bazo Components}}{13}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Mockup of the List of Most Recent Blocks}}{14}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Functionality and Links on the Navbar}}{15}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Package-Diagram of the Blockchain Explorer}}{20}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Sequence Diagram of How the Application Builds and Signs Transactions}}{23}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
