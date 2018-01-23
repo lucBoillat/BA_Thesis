@@ -1,5 +1,76 @@
 \appendix
 
 \chapter{Installation Guidelines}
+This chapter details the procedure to install and run the explorer on a computer or virtual machine with a fresh installation of Ubuntu.
+\section{Prerequisites}
+The explorer requires a working installation of Golang (version 1.9.2 was used to develop the application). The most recent version can be found on their website, along with installation instructions. A \emph{go} folder has to be created in the user's home directory after installation.
+
+\begin{framed}
+https://golang.org/dl/
+\end{framed}
+
+In order to download the explorer's source code, Git needs to be installed. 
+
+\begin{framed}
+sudo apt install git
+\end{framed}
+
+Since the explorer requires a PSQL database, Postgres (version 9.6.6) is also required.
+
+\begin{framed}
+sudo apt install postgresql postgresql-contrib
+\end{framed}
+
+\section{Setting Up the Database}
+
+After installing Postgres, a database super user called 'postgres' is automatically created. With that user, we create a new user which will be used to manage the block explorer's database. First, the psql shell needs to be opened using the postgres account.
+
+\begin{framed}
+sudo -i -u postgres
+
+psql
+\end{framed}
+The new database-user and his password has to be created. Additionally the database 'blockexplorerdb' has to be created. Username and password of the new user can be chosen freely, however the database needs to be called 'blockexplorerdb'. The new user needs all privileges on the newly created database as well.
+
+\begin{framed}
+CREATE ROLE explorer WITH LOGIN PASSWORD 'bazo';
+
+CREATE DATABASE blockexplorerdb;
+
+GRANT ALL PRIVILEGES ON DATABASE blockexplorerdb TO explorer;
+
+\char`\\quit
+\end{framed}
+
+The terminal now has to be restarted to switch back to the computer's regular user.
+
+\section{Setting Up the Explorer}
+
+Using \emph{go get}, a compiled binary of the explorer and all its dependencies get installed.
+
+\begin{framed}
+go get github.com/lucBoillat/BazoBlockExplorer
+\end{framed}
+
+Since the static HTML files do not get included in the compiled binary, the Github repository needs to be cloned to any directory and its \emph{source} folder has to be copied to the binary's location.
+
+\begin{framed}
+git clone https://github.com/lucBoillat/BazoBlockExplorer.git
+\end{framed}
+
+From the explorer's directory, it can now be started using the following arguments:
+\begin{framed}
+./BazoBlockExplorer :PORT USERNAME PASSWORD
+\end{framed}
+
+A running Bazo Miner application is required on the bootstrap server.
 
 \chapter{Contents of the CD}
+
+\begin{itemize}
+\item Bazo Blockchain Explorer Source Code
+\item Latex Source Code
+\item Thesis (PDF)
+\item Intermediate Presentation
+\item Final Presentation
+\end{itemize}

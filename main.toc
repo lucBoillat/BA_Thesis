@@ -29,6 +29,7 @@
 \contentsline {subsection}{\numberline {3.3.3}Administrator Panel}{16}
 \contentsline {subsection}{\numberline {3.3.4}Statistical Information}{16}
 \contentsline {section}{\numberline {3.4}Database}{17}
+\contentsline {subsection}{\numberline {3.4.1}Tables}{17}
 \contentsline {chapter}{\numberline {4}Implementation}{19}
 \contentsline {section}{\numberline {4.1}Packages of the Block Explorer}{19}
 \contentsline {section}{\numberline {4.2}HTML Templates}{20}
@@ -49,13 +50,16 @@
 \contentsline {section}{\numberline {4.10}SQL-Queries}{28}
 \contentsline {subsection}{\numberline {4.10.1}Search Function}{28}
 \contentsline {section}{\numberline {4.11}Hosting}{28}
-\contentsline {chapter}{\numberline {5}Evaluation}{31}
+\contentsline {chapter}{\numberline {5}Evaluation and Future Work}{31}
 \contentsline {chapter}{\numberline {6}Summary and Conclusions}{33}
 \contentsline {chapter}{Bibliography}{35}
-\contentsline {chapter}{Abbreviations}{37}
-\contentsline {chapter}{Glossary}{39}
-\contentsline {chapter}{List of Figures}{39}
-\contentsline {chapter}{List of Tables}{41}
+\contentsline {chapter}{Abbreviations}{39}
+\contentsline {chapter}{Glossary}{41}
+\contentsline {chapter}{List of Figures}{41}
 \contentsline {chapter}{List of Tables}{43}
-\contentsline {chapter}{\numberline {A}Installation Guidelines}{47}
-\contentsline {chapter}{\numberline {B}Contents of the CD}{49}
+\contentsline {chapter}{List of Tables}{45}
+\contentsline {chapter}{\numberline {A}Installation Guidelines}{49}
+\contentsline {section}{\numberline {A.1}Prerequisites}{49}
+\contentsline {section}{\numberline {A.2}Setting Up the Database}{49}
+\contentsline {section}{\numberline {A.3}Setting Up the Explorer}{50}
+\contentsline {chapter}{\numberline {B}Contents of the CD}{51}

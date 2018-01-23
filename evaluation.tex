@@ -1,2 +1,45 @@
-\chapter{Evaluation}
+\chapter{Evaluation and Future Work}
 
+In order to test the Block Explorer's performance, time measurements were taken for certain actions. First, upon starting the explorer up and letting it fill its database, it was measured how long it took to process a blockchain consisting of more than ten thousand blocks. It is important to note, that the majority of the blocks were empty, meaning no transactions were included in them. The miner, the explorer connects to was hosted on an Ubuntu Virtual Machine, located at the University of Zurich. In Table \ref{tab:load}, the average load times on different machines are presented.
+
+Other measurements that were taken include the time it took to request and display single items, a list of items and the search function. The results are displayed in Table \ref{tab:query}. In this test, the explorer itself was hosted on an Ubuntu \cite{ubuntu} Virtual Machine at the University of Zurich and contained the blockchain with over ten thousand blocks. HTML Load Time measured the time it took from the request to the server, until it responded with the HTML file containing the requested blockchain data. Since other files from other sources, such as Bootstrap files, have shown to have irregular load times, a Low Load Time and a High Load Time have been added for measuring load times of the entire page. Testing was conducted using a Computer, connected the University's WiFi and timed using Google Chrome's \cite{chrome} developer tools.
+
+\begin{table}[]
+\centering
+\caption{Load Times to Copy Ten Thousand Blocks From a Miner}
+\label{tab:load}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Computer} & \textbf{CPU} & \textbf{RAM} & \textbf{Load Time in Minutes} \\ \hline
+MacBook Pro & 2.9 GHz Intel Core i5 & 8 GB & 2:11 \\ \hline
+Ubuntu VM &  &  & 2:28 \\ \hline
+Windows 10 PC &  &  &  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Load Times of the Web Application}
+\label{tab:query}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Query}            & \textbf{HTML Load Time} & \textbf{Load Time Low} & \textbf{Load Time High} \\ \hline
+Block                     & 30 ms                   & 135 ms                 & 220 ms                  \\ \hline
+Funds Transaction         & 33 ms                   &                        &                         \\ \hline
+Account with Transactions &                         &                        &                         \\ \hline
+100 Most Recent Blocks    &                         &                        &                         \\ \hline
+Status Page               &                         &                        &                         \\ \hline
+Search of a Block         &                         &                        &                         \\ \hline
+\end{tabular}
+\end{table}
+
+As of time of writing, the applications's backend functionality of retrieving blocks from a miner, saving them to the database and returning them upon request is separated from the frontend that displays the returned data. This enables the possibility of switching out the frontend that displays HTML content for a REST API that returns the blockchain data in JSON format. Uses of such an interface could be an integration into the Payment System PWA, which displays data only on request. For example the PWA could display all confirmed transactions for an account in order to make the Payment app more informative, as seen in Figure \ref{fig:pwa_api}.
+
+Another feature, the current block explorer lacks, is the frontend optimization for mobile devices. Dynamically styled tables and UI components are needed to accommodate for the many resolutions and aspect ratios of mobile devices.
+
+\begin{figure}
+  \includegraphics[scale=0.4]{pwa_integration.png}
+  \centering
+  \caption{Device Running PWA Payment System Requesting a User's Transactions}
+  \label{fig:pwa_api}
+\end{figure}
