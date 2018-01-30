@@ -1,7 +1,8 @@
 \appendix
 
 \chapter{Installation Guidelines}
-This chapter details the procedure to install and run the explorer on a computer or virtual machine with a fresh installation of Ubuntu.
+This chapter details the procedure to install and run the explorer on a computer or virtual machine with a fresh installation of Ubuntu. The source code is available on Github \cite{explorer}.
+
 \section{Prerequisites}
 The explorer requires a working installation of Golang (version 1.9.2 was used to develop the application). The most recent version can be found on their website, along with installation instructions. A \emph{go} folder has to be created in the user's home directory after installation.
 
@@ -9,12 +10,12 @@ The explorer requires a working installation of Golang (version 1.9.2 was used t
 https://golang.org/dl/
 \end{framed}
 
-In order to download the explorer's source code, Git needs to be installed. 
-
-\begin{framed}
-sudo apt install git
-\end{framed}
-
+%In order to download the explorer's source code, Git needs to be installed. 
+%
+%\begin{framed}
+%sudo apt install git
+%\end{framed}
+%
 Since the explorer requires a PSQL database, Postgres (version 9.6.6) is also required.
 
 \begin{framed}
@@ -23,7 +24,7 @@ sudo apt install postgresql postgresql-contrib
 
 \section{Setting Up the Database}
 
-After installing Postgres, a database super user called 'postgres' is automatically created. With that user, we create a new user which will be used to manage the block explorer's database. First, the psql shell needs to be opened using the postgres account.
+After installing Postgres, a database super user called 'postgres' is automatically created. With that user, a new user has to be created, which will be used to manage the block explorer's database. First, the psql shell needs to be opened using the postgres account.
 
 \begin{framed}
 sudo -i -u postgres
@@ -42,7 +43,7 @@ GRANT ALL PRIVILEGES ON DATABASE blockexplorerdb TO explorer;
 \char`\\quit
 \end{framed}
 
-The terminal now has to be restarted to switch back to the computer's regular user.
+If the terminal still displays the user 'postgres' as the current user, it is now time to switch back to the computer's regular user, as no further psql related actions are needed. If switching users requires a password for the 'postgres' account, a restart of the terminal will also log in the regular user.
 
 \section{Setting Up the Explorer}
 
@@ -52,13 +53,18 @@ Using \emph{go get}, a compiled binary of the explorer and all its dependencies 
 go get github.com/lucBoillat/BazoBlockExplorer
 \end{framed}
 
-Since the static HTML files do not get included in the compiled binary, the Github repository needs to be cloned to any directory and its \emph{source} folder has to be copied to the binary's location.
+Since the static HTML files do not get included in the compiled binary, the \emph{source} folder has to be copied from Golang's \emph{src} directory to the \emph{bin} directory, where the compiled block explorer binary is located. The following frame's folder structure assumes a default Golang installation.
 
 \begin{framed}
-git clone https://github.com/lucBoillat/BazoBlockExplorer.git
+cd GODIRECTORY/src/github.com/lucBoillat/BazoBlockExplorer
+
+sudo cp -r source/ ../../../../bin
+
+cd GODIRECTORY/bin
+
 \end{framed}
 
-From the explorer's directory, it can now be started using the following arguments:
+From the explorer's directory, it can now be started using the following arguments. The username and password are the values defined in the database setup step.
 \begin{framed}
 ./BazoBlockExplorer :PORT USERNAME PASSWORD
 \end{framed}
