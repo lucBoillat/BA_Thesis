@@ -53,14 +53,14 @@
 \contentsline {chapter}{\numberline {5}Evaluation and Future Work}{31}
 \contentsline {section}{\numberline {5.1}Evaluating Performance}{31}
 \contentsline {section}{\numberline {5.2}Future Work}{32}
-\contentsline {chapter}{\numberline {6}Summary and Conclusions}{33}
-\contentsline {chapter}{Bibliography}{35}
-\contentsline {chapter}{Abbreviations}{39}
-\contentsline {chapter}{List of Figures}{39}
-\contentsline {chapter}{List of Tables}{41}
+\contentsline {chapter}{\numberline {6}Summary and Conclusions}{35}
+\contentsline {chapter}{Bibliography}{37}
+\contentsline {chapter}{Abbreviations}{41}
+\contentsline {chapter}{List of Figures}{41}
 \contentsline {chapter}{List of Tables}{43}
-\contentsline {chapter}{\numberline {A}Installation Guidelines}{47}
-\contentsline {section}{\numberline {A.1}Prerequisites}{47}
-\contentsline {section}{\numberline {A.2}Setting Up the Database}{47}
-\contentsline {section}{\numberline {A.3}Setting Up the Explorer}{48}
-\contentsline {chapter}{\numberline {B}Contents of the CD}{49}
+\contentsline {chapter}{List of Tables}{45}
+\contentsline {chapter}{\numberline {A}Installation Guidelines}{49}
+\contentsline {section}{\numberline {A.1}Prerequisites}{49}
+\contentsline {section}{\numberline {A.2}Setting Up the Database}{49}
+\contentsline {section}{\numberline {A.3}Setting Up the Explorer}{50}
+\contentsline {chapter}{\numberline {B}Contents of the CD}{51}
