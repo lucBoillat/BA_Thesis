@@ -1,35 +1,35 @@
 \chapter{Evaluation and Future Work}
 \section{Evaluating Performance}
 
-In order to test the Block Explorer's performance, time measurements were taken for certain actions. First, upon starting the explorer up and letting it fill its database, it was measured how long it took to process a blockchain consisting of more than ten thousand blocks. It is important to note, that the majority of the blocks were empty, meaning no transactions were included in them. The miner, the explorer connects to was hosted on an Ubuntu \cite{ubuntu} Virtual Machine, located at the University of Zurich. In Table \ref{tab:load}, the average load times on different machines are presented.
+In order to test the Block Explorer's performance, time measurements were taken for certain actions. First, upon starting the explorer up and letting it fill its database, it was measured how long it took to process a blockchain consisting of more than fifteen thousand blocks. It is important to note, that the majority of the blocks were empty, meaning no transactions were included in them. The miner, the explorer connects to was hosted on an Ubuntu \cite{ubuntu} Virtual Machine, located at the University of Zurich. In Table \ref{tab:load}, the average load times on different machines are presented.
 
-Other measurements that were taken, include the time it took to request and display single items, a list of items and the search function. The results are displayed in Table \ref{tab:query}. In this test, the explorer itself was hosted on an Ubuntu Virtual Machine at the University of Zurich and contained the blockchain with over ten thousand blocks. HTML Load Time measured the time it took from the request to the server, until it responded with the HTML file containing the requested blockchain data. Since other files from other sources, such as Bootstrap files, have shown to have irregular load times, a Low Load Time and a High Load Time have been added for measuring load times of the entire page. Testing was conducted using a Computer, connected the University's WiFi and timed using Google Chrome's \cite{chrome} developer tools.
+Other measurements that were taken, include the time it took to request and display single items, lists of items and the search function. The results are displayed in Table \ref{tab:query}. In this test, the explorer itself was hosted on an Ubuntu Virtual Machine at the University of Zurich and contained the blockchain with over fifteen thousand blocks. HTML Load Time measured the time it took from the request to the server, until it responded with the HTML file containing the requested blockchain data. Since other files are being loaded, such as style sheets, the time it took to load the entire page is included as well. Testing was conducted using a Computer, connected the University's Network using ethernet and timed using Google Chrome's \cite{chrome} developer tools.
 
 \begin{table}[]
 \centering
-\caption{Load Times to Copy Ten Thousand Blocks From a Miner}
+\caption{Load Times to Copy Fifteen Thousand Blocks From a Miner}
 \label{tab:load}
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Computer} & \textbf{CPU} & \textbf{RAM} & \textbf{Load Time in Minutes} \\ \hline
-MacBook Pro & 2.9 GHz Intel Core i5 & 8 GB & 2:11 \\ \hline
-Ubuntu VM &  &  & 2:28 \\ \hline
+MacBook Pro & 2.9 GHz Intel Core i5 & 8 GB & 2:17 \\ \hline
+Ubuntu VM & 2.4 GHz  Intel Xeon & 2 GB  & 3:29 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[]
 \centering
-\caption{Load Times of the Web Application (Ld Tm Stands for Load Time)}
+\caption{Load Times for Various Requests}
 \label{tab:query}
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{Query}            & \textbf{HTML Ld Tm} & \textbf{Ld Tm Low} & \textbf{Ld Tm High} \\ \hline
-Block                     & 30 ms                   & 135 ms                 & 220 ms                  \\ \hline
-Funds Transaction         & 33 ms                   &                        &                         \\ \hline
-Account with Transactions &                         &                        &                         \\ \hline
-100 Most Recent Blocks    &                         &                        &                         \\ \hline
-Status Page               &                         &                        &                         \\ \hline
-Search of a Block         &                         &                        &                         \\ \hline
+\textbf{Query}            & \textbf{HTML Load Time} & \textbf{Page Load Time} \\ \hline
+Block                     & 25 ms                   & 122 ms                  \\ \hline
+Funds Transaction         & 30 ms                   & 121 ms                  \\ \hline
+Account with Transactions & 32 ms                   & 119 ms                  \\ \hline
+100 Most Recent Blocks    & 63 ms                   & 152 ms                  \\ \hline
+Status Page               & 70 ms                   & 744 ms                  \\ \hline
+Search of a Block         & 62 ms                   & 151 ms                  \\ \hline
 \end{tabular}
 \end{table}
 \pagebreak
